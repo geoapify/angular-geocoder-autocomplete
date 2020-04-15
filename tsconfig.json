@@ -14,7 +14,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "angular-geocoder-autocomplete": [
+        "dist/angular-geocoder-autocomplete/angular-geocoder-autocomplete",
+        "dist/angular-geocoder-autocomplete"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
