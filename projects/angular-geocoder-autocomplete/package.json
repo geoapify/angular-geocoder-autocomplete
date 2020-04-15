@@ -1,10 +1,26 @@
 {
   "name": "@geoapify/angular-geocoder-autocomplete",
   "version": "1.0.0",
+  "description": "Angular component for the Geoapify Geocoder Autocomplete field",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",
     "tslib": "^1.10.0",
     "@geoapify/geocoder-autocomplete": "^1.0.2"
+  },
+  "keywords": ["angular", "geoapify", "geocoding", "address", "autocomplete", "search", "city", "country", "state", "amenity", "location"],
+  "author": {
+    "name": "Geoapify GmbH",
+    "email": "info@geoapify.com",
+    "url": "https://geoapify.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/geoapify/angular-geocoder-autocomplete/issues"
+  },
+  "homepage": "https://github.com/geoapify/angular-geocoder-autocomplete#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://git@github.com/geoapify/angular-geocoder-autocomplete.git"
   }
 }

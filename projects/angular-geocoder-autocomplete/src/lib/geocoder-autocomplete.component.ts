@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, SimpleChanges, Input, OnChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, SimpleChanges, Input, OnChanges, Output, EventEmitter, OnDestroy, Inject } from '@angular/core';
 import { GeocoderAutocomplete, LocationType, SupportedLanguage, CountyCode, GeoPosition, GeocoderAutocompleteOptions } from '@geoapify/geocoder-autocomplete';
+import { GeoapifyConfig, GEOAPIFY_CONFIG } from './geoapify-config';
 
 
 @Component({
@@ -15,10 +16,6 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
   @ViewChild('container')
   container: ElementRef;
-
-  @Input()
-  get apiKey() { throw new Error('<geoapify-geocoder-autocomplete /> requires apiKey attribute'); }
-  set apiKey(value: string) { Object.defineProperty(this, 'apiKey', { value, writable: true, configurable: true }); }
 
   @Input()
   value: string;
@@ -47,7 +44,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   @Output()
   suggestionsChange: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(@Inject(GEOAPIFY_CONFIG) private config: GeoapifyConfig) { }
 
   ngOnInit(): void {
 
@@ -80,7 +77,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
       options.limit = this.limit;
     }
 
-    this.autocomplete = new GeocoderAutocomplete(this.container.nativeElement, this.apiKey, options);
+    this.autocomplete = new GeocoderAutocomplete(this.container.nativeElement, this.config.apiKey, options);
 
     if (this.value) {
       this.autocomplete.setValue(this.value);

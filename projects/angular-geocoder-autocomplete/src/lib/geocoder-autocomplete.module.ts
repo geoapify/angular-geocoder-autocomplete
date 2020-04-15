@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { GeocoderAutocompleteComponent } from './geocoder-autocomplete.component';
-
-
+import { GEOAPIFY_CONFIG } from './geoapify-config';
 
 @NgModule({
   declarations: [GeocoderAutocompleteComponent],
@@ -9,4 +8,13 @@ import { GeocoderAutocompleteComponent } from './geocoder-autocomplete.component
   ],
   exports: [GeocoderAutocompleteComponent]
 })
-export class GeoapifyGeocoderAutocompleteModule { }
+export class GeoapifyGeocoderAutocompleteModule {
+  static withConfig( apiKey: string ): ModuleWithProviders {
+    return {
+      ngModule: GeoapifyGeocoderAutocompleteModule,
+      providers: [
+        { provide: GEOAPIFY_CONFIG, useValue: { apiKey: apiKey }}
+      ]
+    }
+  }
+} 
