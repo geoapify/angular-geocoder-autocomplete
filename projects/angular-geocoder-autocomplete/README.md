@@ -2,11 +2,11 @@
 The component wraps the [@geoapify/geocoder-autocomplete](https://www.npmjs.com/package/@geoapify/geocoder-autocomplete) library into an Angular component.
 
 ## Installation
-@geoapify/angular-geocoder-autocomplete has a peer dependancy on **@geoapify-geocoder-autocomplete**:
+@geoapify/angular-geocoder-autocomplete has a peer dependancy on **@geoapify/geocoder-autocomplete**:
 ```
-npm install @geoapify-geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
+npm install @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
 # or 
-yarn add @geoapify-geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
+yarn add @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
 ```
 ## Compatiblity table
 |@geoapify/angular-geocoder-autocomplete|Angular|
