@@ -21,7 +21,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   value: string;
 
   @Input()
-  placeHolder: string;
+  placeholder: string;
 
   @Input()
   type: LocationType;
@@ -53,8 +53,8 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   ngAfterViewInit() {
     const options: GeocoderAutocompleteOptions = {};
 
-    if (this.placeHolder) {
-      options.placeholder = this.placeHolder;
+    if (this.placeholder) {
+      options.placeholder = this.placeholder;
     }
 
     if (this.type) {
