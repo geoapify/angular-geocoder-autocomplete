@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, SimpleChanges, Input, OnChanges, Output, EventEmitter, OnDestroy, Inject } from '@angular/core';
 import { GeocoderAutocomplete, LocationType, SupportedLanguage, CountyCode, GeoPosition, GeocoderAutocompleteOptions } from '@geoapify/geocoder-autocomplete';
 import { GeoapifyConfig, GEOAPIFY_CONFIG } from './geoapify-config';
+import { ByCountryCodeOptions, ByCircleOptions, ByRectOptions, ByProximityOptions } from '@geoapify/geocoder-autocomplete/dist/autocomplete';
 
 
 @Component({
@@ -30,10 +31,31 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   lang: SupportedLanguage
 
   @Input()
-  countryCodes: CountyCode[];
+  filterByCountryCode: ByCountryCodeOptions;
 
   @Input()
-  position: GeoPosition;
+  filterByCircle: ByCircleOptions;
+
+  @Input()
+  filterByRect: ByRectOptions;
+
+  @Input()
+  biasByCountryCode: ByCountryCodeOptions;
+
+  @Input()
+  biasByCircle: ByCircleOptions;
+
+  @Input()
+  biasByRect: ByRectOptions;
+
+  @Input()
+  biasByProximity: ByProximityOptions;
+
+  @Input()
+  countryCodes: CountyCode[];   // deprecated
+
+  @Input()
+  position: GeoPosition;   // deprecated
 
   @Input()
   limit: number;
@@ -65,14 +87,6 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
       options.lang = this.lang;
     }
 
-    if (this.countryCodes) {
-      options.countryCodes = this.countryCodes;
-    }
-
-    if (this.position) {
-      options.position = this.position;
-    }
-
     if (this.limit) {
       options.limit = this.limit;
     }
@@ -81,6 +95,44 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
     if (this.value) {
       this.autocomplete.setValue(this.value);
+    }
+
+    if (this.countryCodes) {
+      console.warn("WARNING! Obsolete function called. The  'countryCodes' input has been deprecated, please use the new 'filterByCountryCode' input instead!");
+      this.autocomplete.addFilterByCountry(this.countryCodes);
+    }
+
+    if (this.position) {
+      console.warn("WARNING! Obsolete function called. The  'position' input has been deprecated, please use the new 'biasByLocation' input instead!");
+      this.autocomplete.addBiasByProximity(this.position);
+    }
+
+    if (this.filterByCircle) {
+      this.autocomplete.addFilterByCircle(this.filterByCircle);
+    }
+
+    if (this.filterByCountryCode) {
+      this.autocomplete.addFilterByCountry(this.filterByCountryCode);
+    }
+
+    if (this.filterByRect) {
+      this.autocomplete.addFilterByRect(this.filterByRect);
+    }
+
+    if (this.biasByCircle) {
+      this.autocomplete.addBiasByCircle(this.biasByCircle);
+    }
+
+    if (this.biasByRect) {
+      this.autocomplete.addBiasByRect(this.biasByRect);
+    }
+
+    if (this.biasByProximity) {
+      this.autocomplete.addBiasByProximity(this.biasByProximity);
+    }
+
+    if (this.biasByCountryCode) {
+      this.autocomplete.addBiasByCountry(this.biasByCountryCode);
     }
 
     this.autocomplete.on('select', this.onSelect.bind(this));
@@ -116,14 +168,51 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
       this.autocomplete.setLang(changes['lang'].currentValue);
     }
 
+    if (changes['filterByCircle'] &&
+    !changes['filterByCircle'].isFirstChange()) {
+      this.autocomplete.addFilterByCircle(changes['filterByCircle'].currentValue);
+    }
+
+    if (changes['filterByCountryCode'] &&
+    !changes['filterByCountryCode'].isFirstChange()) {
+      this.autocomplete.addFilterByCountry(changes['filterByCountryCode'].currentValue);
+    }
+
+    if (changes['filterByRect'] &&
+    !changes['filterByRect'].isFirstChange()) {
+      this.autocomplete.addFilterByRect(changes['filterByRect'].currentValue);
+    }
+
+    if (changes['biasByCircle'] &&
+    !changes['biasByCircle'].isFirstChange()) {
+      this.autocomplete.addBiasByCircle(changes['biasByCircle'].currentValue);
+    }
+
+    if (changes['biasByRect'] &&
+    !changes['biasByRect'].isFirstChange()) {
+      this.autocomplete.addBiasByRect(changes['biasByRect'].currentValue);
+    }
+
+    if (changes['biasByProximity'] &&
+    !changes['biasByProximity'].isFirstChange()) {
+      this.autocomplete.addBiasByProximity(changes['biasByProximity'].currentValue);
+    }
+
+    if (changes['biasByCountryCode'] &&
+    !changes['biasByCountryCode'].isFirstChange()) {
+      this.autocomplete.addBiasByCountry(changes['biasByCountryCode'].currentValue);
+    }
+
     if (changes['countryCodes'] &&
       !changes['countryCodes'].isFirstChange()) {
-      this.autocomplete.setCountryCodes(changes['countryCodes'].currentValue);
+      console.warn("WARNING! Obsolete function called. The  'countryCodes' input has been deprecated, please use the new 'filterByCountryCode' input instead!");
+      this.autocomplete.addFilterByCountry(changes['countryCodes'].currentValue);
     }
 
     if (changes['position'] &&
       !changes['position'].isFirstChange()) {
-      this.autocomplete.setPosition(changes['position'].currentValue);
+      console.warn("WARNING! Obsolete function called. The  'position' input has been deprecated, please use the new 'biasByLocation' input instead!");
+      this.autocomplete.addBiasByProximity(changes['position'].currentValue);
     }
 
     if (changes['limit'] &&
