@@ -100,7 +100,7 @@ Learn more about provided styles and customization option on [@geoapify-geocoder
 | biasByCountryCode | ByCountryCodeOptions | First, search places in the countries |
 | biasByCircle | ByCircleOptions | First, search places inside the circle |
 | biasByRect | ByRectOptions | First, search places inside the rectangle |
-| biasByProximity | biasByProximity | Prioritize results by farness from the location |
+| biasByProximity | ByProximityOptions | Prioritize results by farness from the location |
 | ~~position~~ | GeoPosition | Prefered search position |
 | ~~countryCodes~~ | CountyCode[] | Limit the search by countries |
 
