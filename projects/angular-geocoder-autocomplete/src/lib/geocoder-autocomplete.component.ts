@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, SimpleChanges, Input, OnChanges, Output, EventEmitter, OnDestroy, Inject } from '@angular/core';
-import { GeocoderAutocomplete, LocationType, SupportedLanguage, CountyCode, GeoPosition, GeocoderAutocompleteOptions } from '@geoapify/geocoder-autocomplete';
+import { GeocoderAutocomplete, LocationType, SupportedLanguage, CountyCode, GeoPosition, GeocoderAutocompleteOptions, ByCountryCodeOptions, ByCircleOptions, ByRectOptions, ByProximityOptions } from '@geoapify/geocoder-autocomplete';
 import { GeoapifyConfig, GEOAPIFY_CONFIG } from './geoapify-config';
-import { ByCountryCodeOptions, ByCircleOptions, ByRectOptions, ByProximityOptions } from '@geoapify/geocoder-autocomplete/dist/autocomplete';
 
 
 @Component({
