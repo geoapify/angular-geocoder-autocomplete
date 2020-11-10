@@ -9,7 +9,7 @@ import { GEOAPIFY_CONFIG } from './geoapify-config';
   exports: [GeocoderAutocompleteComponent]
 })
 export class GeoapifyGeocoderAutocompleteModule {
-  static withConfig( apiKey: string ): ModuleWithProviders {
+  static withConfig( apiKey: string ): ModuleWithProviders<GeoapifyGeocoderAutocompleteModule> {
     return {
       ngModule: GeoapifyGeocoderAutocompleteModule,
       providers: [

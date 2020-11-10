@@ -1,12 +1,14 @@
 {
   "name": "@geoapify/angular-geocoder-autocomplete",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Angular component for the Geoapify Geocoder Autocomplete field",
   "peerDependencies": {
-    "@angular/common": "^9.0.0",
-    "@angular/core": "^9.0.0",
-    "tslib": "^1.10.0",
-    "@geoapify/geocoder-autocomplete": "^1.1.0"
+    "@angular/common": "^10.0.0",
+    "@angular/core": "^10.0.0",
+    "@geoapify/geocoder-autocomplete": "^1.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
   },
   "keywords": [
     "angular",

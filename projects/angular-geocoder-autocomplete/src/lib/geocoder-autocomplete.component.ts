@@ -27,6 +27,12 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   type: LocationType;
 
   @Input()
+  skipIcons: boolean;
+
+  @Input()
+  skipDetails: boolean;
+
+  @Input()
   lang: SupportedLanguage
 
   @Input()
@@ -88,6 +94,14 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
     if (this.limit) {
       options.limit = this.limit;
+    }
+
+    if (this.skipIcons) {
+      options.skipIcons = this.skipIcons;
+    }
+
+    if (this.skipDetails) {
+      options.skipDetails = this.skipDetails;
     }
 
     this.autocomplete = new GeocoderAutocomplete(this.container.nativeElement, this.config.apiKey, options);

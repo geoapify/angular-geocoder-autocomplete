@@ -13,6 +13,7 @@ yarn add @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
 |-|-|
 |1.0.x|9.x|
 |1.1.x|9.x|
+|1.2.x|10.x|
 
 ## Usage
 ### 1. Import the module
@@ -80,6 +81,8 @@ Learn more about provided styles and customization option on [@geoapify-geocoder
     [biasByCircle]="biasByCircle"
     [biasByRect]="biasByRect"
     [biasByProximity]="biasByProximity"
+    [skipIcons]="false"
+    [skipDetails]="false"
     (placeSelect)="placeSelected($event)" 
     (suggestionsChange)="suggestionsChanged($event)">
 </geoapify-geocoder-autocomplete>
@@ -101,6 +104,8 @@ Learn more about provided styles and customization option on [@geoapify-geocoder
 | biasByCircle | ByCircleOptions | First, search places inside the circle |
 | biasByRect | ByRectOptions | First, search places inside the rectangle |
 | biasByProximity | ByProximityOptions | Prioritize results by farness from the location |
+| skipIcons	| boolean	| Don't add icons to suggestions |
+| skipDetails	| boolean	| Skip Place Details API call on selection change |
 | ~~position~~ | GeoPosition | Prefered search position |
 | ~~countryCodes~~ | CountyCode[] | Limit the search by countries |
 
@@ -146,6 +151,8 @@ import { ByProximityOptions, LocationType, ... } from '@geoapify/geocoder-autoco
 | placeSelect | Fired when a location was selected | [GeoJSON.Feature](https://geojson.org/) |
 | suggestionsChange | Fired on new suggestions | [GeoJSON.Feature[]] (https://geojson.org/) |
 
+The `placeSelect` output returns detailed information about the selected place got with [Geoapify Place Details API](https://apidocs.geoapify.com/docs/place-details). The information contains the place category, data fields and geometry (boundary or polygon).  Note, that the Place Details API call costs an additional 'geocoding & places' request. Use the skipDetails option to switch the functionality off.
+
 Properties of the feature contain information about address and location.
 Learn more about Geocoder result properties on [Geoapify Documentation page](https://apidocs.geoapify.com/docs/geocoding/).
 
@@ -153,6 +160,7 @@ The component doesn't have dependancy on [@types/geojson](https://www.npmjs.com/
 
 ## Geoapify Geocoding API documentation
 * [Geocoding API Documentation](https://apidocs.geoapify.com/docs/geocoding)
+* [Place Details API Documentation](https://apidocs.geoapify.com/docs/place-details)
 * [Geocoding API Playground](https://apidocs.geoapify.com/playground/geocoding)
 * [Register and get Geoapify API key](https://myprojects.geoapify.com)
 * [Geoapify APIs](https://www.geoapify.com/)
