@@ -65,6 +65,15 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   @Input()
   limit: number;
 
+  @Input()
+  preprocessingHook: (value: string) => string;
+
+  @Input()
+  postprocessingHook: (feature: any) => string;
+
+  @Input()
+  suggestionsFilter: (suggestions: any[]) => any[];
+
   @Output()
   placeSelect: EventEmitter<any> = new EventEmitter<any>();
 
@@ -148,6 +157,18 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
       this.autocomplete.addBiasByCountry(this.biasByCountryCode);
     }
 
+    if (this.preprocessingHook) {
+      this.autocomplete.setPreprocessHook(this.preprocessingHook);
+    }
+
+    if (this.postprocessingHook) {
+      this.autocomplete.setPostprocessHook(this.postprocessingHook);
+    }
+
+    if (this.suggestionsFilter) {
+      this.autocomplete.setSuggestionsFilter(this.suggestionsFilter);
+    }
+
     this.autocomplete.on('select', this.onSelect.bind(this));
     this.autocomplete.on('suggestions', this.onSuggestions.bind(this));
   }
@@ -182,37 +203,37 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     }
 
     if (changes['filterByCircle'] &&
-    !changes['filterByCircle'].isFirstChange()) {
+      !changes['filterByCircle'].isFirstChange()) {
       this.autocomplete.addFilterByCircle(changes['filterByCircle'].currentValue);
     }
 
     if (changes['filterByCountryCode'] &&
-    !changes['filterByCountryCode'].isFirstChange()) {
+      !changes['filterByCountryCode'].isFirstChange()) {
       this.autocomplete.addFilterByCountry(changes['filterByCountryCode'].currentValue);
     }
 
     if (changes['filterByRect'] &&
-    !changes['filterByRect'].isFirstChange()) {
+      !changes['filterByRect'].isFirstChange()) {
       this.autocomplete.addFilterByRect(changes['filterByRect'].currentValue);
     }
 
     if (changes['biasByCircle'] &&
-    !changes['biasByCircle'].isFirstChange()) {
+      !changes['biasByCircle'].isFirstChange()) {
       this.autocomplete.addBiasByCircle(changes['biasByCircle'].currentValue);
     }
 
     if (changes['biasByRect'] &&
-    !changes['biasByRect'].isFirstChange()) {
+      !changes['biasByRect'].isFirstChange()) {
       this.autocomplete.addBiasByRect(changes['biasByRect'].currentValue);
     }
 
     if (changes['biasByProximity'] &&
-    !changes['biasByProximity'].isFirstChange()) {
+      !changes['biasByProximity'].isFirstChange()) {
       this.autocomplete.addBiasByProximity(changes['biasByProximity'].currentValue);
     }
 
     if (changes['biasByCountryCode'] &&
-    !changes['biasByCountryCode'].isFirstChange()) {
+      !changes['biasByCountryCode'].isFirstChange()) {
       this.autocomplete.addBiasByCountry(changes['biasByCountryCode'].currentValue);
     }
 
@@ -231,6 +252,21 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     if (changes['limit'] &&
       !changes['limit'].isFirstChange()) {
       this.autocomplete.setLimit(changes['limit'].currentValue);
+    }
+
+    if (changes['preprocessingHook'] &&
+      !changes['preprocessingHook'].isFirstChange()) {
+      this.autocomplete.setPreprocessHook(changes['preprocessingHook'].currentValue);
+    }
+
+    if (changes['postprocessingHook'] &&
+      !changes['postprocessingHook'].isFirstChange()) {
+      this.autocomplete.setPostprocessHook(changes['postprocessingHook'].currentValue);
+    }
+
+    if (changes['suggestionsFilter'] &&
+      !changes['suggestionsFilter'].isFirstChange()) {
+      this.autocomplete.setSuggestionsFilter(changes['suggestionsFilter'].currentValue);
     }
   }
 
