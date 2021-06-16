@@ -1,5 +1,5 @@
 # Angular compoment for Geoapify Geocoder Autocomplete
-The component wraps the [@geoapify/geocoder-autocomplete](https://www.npmjs.com/package/@geoapify/geocoder-autocomplete) library into an Angular component.
+The component wraps the [@geoapify/geocoder-autocomplete](https://www.npmjs.com/package/@geoapify/geocoder-autocomplete) library into an Angular component. The library uses [Geoapify Geocoding Autocomplete](https://www.geoapify.com/address-autocomplete/) as an address search service.
 
 ## Installation
 @geoapify/angular-geocoder-autocomplete has a peer dependancy on **@geoapify/geocoder-autocomplete**:
@@ -20,7 +20,7 @@ yarn add @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
 ### 1. Import the module
 You need an API key to be able to call Geoapify Geocoding API. 
 Register and get an API key for Free on [myprojects.geoapify.com](https://myprojects.geoapify.com/).
-Geoapify has a [Freemium pricing model](https://www.geoapify.com/api-pricing/). You can start for Free and extend when you need it.
+Geoapify has a [Freemium pricing model](https://www.geoapify.com/pricing/). You can start for Free and extend when you need it.
 
 ```javascript
 import { BrowserModule } from '@angular/platform-browser';
