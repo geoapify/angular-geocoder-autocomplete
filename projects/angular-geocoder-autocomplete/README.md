@@ -14,8 +14,8 @@ yarn add @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
 |1.0.x|9.x|
 |1.1.x|9.x|
 |1.2.x|10.x|
-|1.3.x|11.x|
-
+|1.3.0-1.3.1|11.x|
+|1.3.2-1.3.x|12.x|
 ## Usage
 ### 1. Import the module
 You need an API key to be able to call Geoapify Geocoding API. 
