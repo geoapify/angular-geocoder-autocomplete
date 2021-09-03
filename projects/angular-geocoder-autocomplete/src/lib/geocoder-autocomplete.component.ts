@@ -66,6 +66,9 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   limit: number;
 
   @Input()
+  debounceDelay: number;
+
+  @Input()
   preprocessingHook: (value: string) => string;
 
   @Input()
@@ -103,6 +106,10 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
     if (this.limit) {
       options.limit = this.limit;
+    }
+
+    if (this.debounceDelay) {
+      options.debounceDelay = this.debounceDelay;
     }
 
     if (this.skipIcons) {
@@ -252,6 +259,11 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     if (changes['limit'] &&
       !changes['limit'].isFirstChange()) {
       this.autocomplete.setLimit(changes['limit'].currentValue);
+    }
+
+    if (changes['debounceDelay'] &&
+      !changes['debounceDelay'].isFirstChange()) {
+      this.autocomplete.setLimit(changes['debounceDelay'].currentValue);
     }
 
     if (changes['preprocessingHook'] &&
