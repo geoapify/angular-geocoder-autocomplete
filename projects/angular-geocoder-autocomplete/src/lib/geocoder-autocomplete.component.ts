@@ -261,11 +261,6 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
       this.autocomplete.setLimit(changes['limit'].currentValue);
     }
 
-    if (changes['debounceDelay'] &&
-      !changes['debounceDelay'].isFirstChange()) {
-      this.autocomplete.setLimit(changes['debounceDelay'].currentValue);
-    }
-
     if (changes['preprocessingHook'] &&
       !changes['preprocessingHook'].isFirstChange()) {
       this.autocomplete.setPreprocessHook(changes['preprocessingHook'].currentValue);
