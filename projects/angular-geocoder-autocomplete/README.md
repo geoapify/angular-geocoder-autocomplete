@@ -75,6 +75,7 @@ Learn more about provided styles and customization option on [@geoapify-geocoder
     [type]="options.type"
     [lang]="options.lang"
     [limit]="options.limit" 
+    [debounceDelay]="options.debounceDelay"
     [filterByCountryCode]="filterByCountryCode"
     [filterByCircle]="filterByCircle"
     [filterByRect]="filterByRect"
@@ -100,6 +101,7 @@ Learn more about provided styles and customization option on [@geoapify-geocoder
 | type | LocationType | Type of a location
 | lang | SupportedLanguage | Results language |
 | limit | number | The maximal number of returned suggestions |
+| debounceDelay | number | A delay between user input and the API call to prevent unnecessary calls. The default value is 100ms
 | placeholder | string | An input field placeholder |
 | filterByCountryCode | ByCountryCodeOptions | Search places in the countries |
 | filterByCircle | ByCircleOptions | Search places inside the circle |
