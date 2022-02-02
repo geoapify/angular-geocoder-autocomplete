@@ -83,6 +83,9 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   @Output()
   suggestionsChange: EventEmitter<any> = new EventEmitter<any>();
 
+  @Output()
+  userInput: EventEmitter<string> = new EventEmitter<string>();
+
   constructor(@Inject(GEOAPIFY_CONFIG) private config: GeoapifyConfig) { }
 
   ngOnInit(): void {
@@ -178,6 +181,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
     this.autocomplete.on('select', this.onSelect.bind(this));
     this.autocomplete.on('suggestions', this.onSuggestions.bind(this));
+    this.autocomplete.on('input', this.onSuggestions.bind(this));
   }
 
   onSelect(value: any) {
@@ -186,6 +190,10 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
   onSuggestions(value: any) {
     this.suggestionsChange.emit(value);
+  }
+
+  onInput(value: string) {
+    this.userInput.emit(value);
   }
 
   ngOnChanges(changes: SimpleChanges) {
