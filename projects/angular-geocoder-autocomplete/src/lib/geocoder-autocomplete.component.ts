@@ -181,7 +181,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
     this.autocomplete.on('select', this.onSelect.bind(this));
     this.autocomplete.on('suggestions', this.onSuggestions.bind(this));
-    this.autocomplete.on('input', this.onSuggestions.bind(this));
+    this.autocomplete.on('input', this.onInput.bind(this));
   }
 
   onSelect(value: any) {
