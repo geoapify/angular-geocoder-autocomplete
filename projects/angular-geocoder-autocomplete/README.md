@@ -159,7 +159,8 @@ import { ByProximityOptions, LocationType, ... } from '@geoapify/geocoder-autoco
 | Name | Description | Value type |
 |-|-|-|
 | placeSelect | Fired when a location was selected | [GeoJSON.Feature](https://geojson.org/) |
-| suggestionsChange | Fired on new suggestions | [GeoJSON.Feature[]] (https://geojson.org/) |
+| suggestionsChange | Fired on new suggestions | [GeoJSON.Feature[]](https://geojson.org/) |
+| suggestionsChange | Fired on new suggestions | [GeoJSON.Feature[]](https://geojson.org/) |
 
 The `placeSelect` output returns detailed information about the selected place got with [Geoapify Place Details API](https://apidocs.geoapify.com/docs/place-details). The information contains the place category, data fields and geometry (boundary or polygon).  Note, that the Place Details API call costs an additional 'geocoding & places' request. Use the skipDetails option to switch the functionality off.
 

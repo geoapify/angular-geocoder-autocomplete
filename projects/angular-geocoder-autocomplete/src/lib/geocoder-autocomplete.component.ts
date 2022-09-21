@@ -86,6 +86,18 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   @Output()
   userInput: EventEmitter<string> = new EventEmitter<string>();
 
+  @Output()
+  open: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @Output()
+  close: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  private onSelectEventFunction: any;
+  private onSuggestionsEventFunction: any;
+  private onUserInputEventFunction: any;
+  private onOpenEventFunction: any;
+  private onCloseEventFunction: any;
+
   constructor(@Inject(GEOAPIFY_CONFIG) private config: GeoapifyConfig) { }
 
   ngOnInit(): void {
@@ -178,10 +190,12 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     if (this.suggestionsFilter) {
       this.autocomplete.setSuggestionsFilter(this.suggestionsFilter);
     }
-
+    
     this.autocomplete.on('select', this.onSelect.bind(this));
     this.autocomplete.on('suggestions', this.onSuggestions.bind(this));
     this.autocomplete.on('input', this.onInput.bind(this));
+    this.autocomplete.on('open', this.onOpen.bind(this));
+    this.autocomplete.on('close', this.onClose.bind(this));
   }
 
   onSelect(value: any) {
@@ -194,6 +208,14 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
   onInput(value: string) {
     this.userInput.emit(value);
+  }
+
+  onOpen(opened: boolean) {
+    this.open.emit(opened);
+  }
+
+  onClose(opened: boolean) {
+    this.close.emit(opened);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -286,7 +308,10 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   }
 
   ngOnDestroy() {
-    this.autocomplete.off('select', this.onSelect);
-    this.autocomplete.off('suggestions', this.onSuggestions);
+    this.autocomplete.off('select');
+    this.autocomplete.off('suggestions');
+    this.autocomplete.off('input');
+    this.autocomplete.off('open');
+    this.autocomplete.off('close');
   }
 }
