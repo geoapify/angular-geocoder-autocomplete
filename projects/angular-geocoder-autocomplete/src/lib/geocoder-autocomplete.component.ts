@@ -30,7 +30,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   skipIcons: boolean;
 
   @Input()
-  skipDetails: boolean;
+  addDetails: boolean;
 
   @Input()
   lang: SupportedLanguage
@@ -76,6 +76,12 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
   @Input()
   suggestionsFilter: (suggestions: any[]) => any[];
+
+  @Input()
+  sendGeocoderRequestFunc: (value: string, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
+
+  @Input()
+  sendPlaceDetailsRequestFunc: (feature: any, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
 
   @Output()
   placeSelect: EventEmitter<any> = new EventEmitter<any>();
@@ -131,8 +137,8 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
       options.skipIcons = this.skipIcons;
     }
 
-    if (this.skipDetails) {
-      options.skipDetails = this.skipDetails;
+    if (this.addDetails) {
+      options.addDetails = this.addDetails;
     }
 
     this.autocomplete = new GeocoderAutocomplete(this.container.nativeElement, this.config.apiKey, options);
@@ -189,6 +195,14 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
     if (this.suggestionsFilter) {
       this.autocomplete.setSuggestionsFilter(this.suggestionsFilter);
+    }
+
+    if (this.sendGeocoderRequestFunc) {
+      this.autocomplete.setSendGeocoderRequestFunc(this.sendGeocoderRequestFunc);
+    }
+
+    if (this.sendPlaceDetailsRequestFunc) {
+      this.autocomplete.setSendPlaceDetailsRequestFunc(this.sendPlaceDetailsRequestFunc);
     }
     
     this.autocomplete.on('select', this.onSelect.bind(this));
