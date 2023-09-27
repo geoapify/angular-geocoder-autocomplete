@@ -352,7 +352,7 @@ When considering the standalone usage of the `geocoder-autocomplete` library wit
 4. **Performance**: As the library has zero dependencies and is used directly, it may offer slightly better performance compared to using a wrapper. This can be advantageous for performance-sensitive applications.
 
 Now, let's explore how to seamlessly integrate the geocoder-autocomplete library directly into your Angular project:
-### 1: Create a Container Element**
+### 1: Create a Container Element
 
 In your HTML template, add a container element (e.g., a `<div>`) with a `position: relative` style to serve as the host for the `geocoder-autocomplete` control. This container will determine the position of the autocomplete suggestions dropdown.
 
