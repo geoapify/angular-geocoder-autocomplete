@@ -23,6 +23,7 @@ yarn add @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
 | 1.3.4 - 1.3.5                           | 13.x           |
 | 1.3.6 - 1.3.x                           | 14.x           |
 | 2.0.0                                   | 15.x           |
+| 2.0.1 - 2.0.x                           | 15.x-16.x      |
 
 **Note:** If you want to get rid of the Angular version dependency or integrate the `geocoder-autocomplete` without the wrapper, you can follow the instructions provided in [the documentation for standalone usage](#standalone-usage).
 
