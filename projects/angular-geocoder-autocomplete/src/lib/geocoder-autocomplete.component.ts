@@ -33,7 +33,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   addDetails: boolean;
 
   @Input()
-  lang: SupportedLanguage
+  lang: SupportedLanguage;
 
   @Input()
   filterByCountryCode: ByCountryCodeOptions;
@@ -204,7 +204,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     if (this.sendPlaceDetailsRequestFunc) {
       this.autocomplete.setSendPlaceDetailsRequestFunc(this.sendPlaceDetailsRequestFunc);
     }
-    
+
     this.autocomplete.on('select', this.onSelect.bind(this));
     this.autocomplete.on('suggestions', this.onSuggestions.bind(this));
     this.autocomplete.on('input', this.onInput.bind(this));

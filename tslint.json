@@ -65,8 +65,7 @@
       "as-needed"
     ],
     "quotemark": [
-      true,
-      "single"
+      false
     ],
     "semicolon": {
       "options": [
@@ -131,6 +130,7 @@
     "template-banana-in-box": true,
     "template-no-negated-async": true,
     "use-lifecycle-interface": true,
-    "use-pipe-transform-interface": true
+    "use-pipe-transform-interface": true,
+    "no-trailing-whitespace": false
   }
 }
