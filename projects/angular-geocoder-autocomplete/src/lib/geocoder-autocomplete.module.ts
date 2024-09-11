@@ -15,6 +15,6 @@ export class GeoapifyGeocoderAutocompleteModule {
       providers: [
         { provide: GEOAPIFY_CONFIG, useValue: { apiKey: apiKey }}
       ]
-    }
+    };
   }
-} 
+}
