@@ -4,9 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build angular-geocoder-autocomplete",
     "test": "ng test",
-    "lint": "tslint",
+    "lint": "tslint -p tsconfig.json",
     "e2e": "ng e2e"
   },
   "private": true,
