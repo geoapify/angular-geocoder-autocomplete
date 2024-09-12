@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GeocoderAutocompleteComponent } from './geocoder-autocomplete.component';
 import { GEOAPIFY_CONFIG } from "./geoapify-config";
@@ -7,7 +7,7 @@ describe('GeocoderAutocompleteComponent', () => {
   let component: GeocoderAutocompleteComponent;
   let fixture: ComponentFixture<GeocoderAutocompleteComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [GeocoderAutocompleteComponent],
       providers: [
