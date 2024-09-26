@@ -1,5 +1,29 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, SimpleChanges, Input, OnChanges, Output, EventEmitter, OnDestroy, Inject } from '@angular/core';
-import { GeocoderAutocomplete, LocationType, SupportedLanguage, CountyCode, GeoPosition, GeocoderAutocompleteOptions, ByCountryCodeOptions, ByCircleOptions, ByRectOptions, ByProximityOptions } from '@geoapify/geocoder-autocomplete';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  SimpleChanges,
+  Input,
+  OnChanges,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  Inject
+} from '@angular/core';
+import {
+  GeocoderAutocomplete,
+  LocationType,
+  SupportedLanguage,
+  CountyCode,
+  GeoPosition,
+  GeocoderAutocompleteOptions,
+  ByCountryCodeOptions,
+  ByCircleOptions,
+  ByRectOptions,
+  ByProximityOptions
+} from '@geoapify/geocoder-autocomplete';
 import { GeoapifyConfig, GEOAPIFY_CONFIG } from './geoapify-config';
 
 
@@ -33,7 +57,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   addDetails: boolean;
 
   @Input()
-  lang: SupportedLanguage
+  lang: SupportedLanguage;
 
   @Input()
   filterByCountryCode: ByCountryCodeOptions;
@@ -204,7 +228,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     if (this.sendPlaceDetailsRequestFunc) {
       this.autocomplete.setSendPlaceDetailsRequestFunc(this.sendPlaceDetailsRequestFunc);
     }
-    
+
     this.autocomplete.on('select', this.onSelect.bind(this));
     this.autocomplete.on('suggestions', this.onSuggestions.bind(this));
     this.autocomplete.on('input', this.onInput.bind(this));

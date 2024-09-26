@@ -1,0 +1,32 @@
+<geoapify-geocoder-autocomplete></geoapify-geocoder-autocomplete>
+
+<!-- Usage with Event Listeners: Listen for place selection and suggestions change events. -->
+
+<geoapify-geocoder-autocomplete
+  (placeSelect)="placeSelected($event)"
+  (suggestionsChange)="suggestionsChanged($event)">
+</geoapify-geocoder-autocomplete>
+
+<!-- Customized Usage: Customize the behavior and appearance of the Geoapify Geocoder Autocomplete input field by binding to various input properties and event handlers. -->
+
+<geoapify-geocoder-autocomplete
+  [value]="displayValue"
+  [type]="options.type"
+  [lang]="options.lang"
+  [limit]="options.limit"
+  [filterByCountryCode]="filterByCountryCode"
+  [filterByCircle]="filterByCircle"
+  [filterByRect]="filterByRect"
+  [biasByCountryCode]="biasByCountryCode"
+  [biasByCircle]="biasByCircle"
+  [biasByRect]="biasByRect"
+  [biasByProximity]="biasByProximity"
+  [skipIcons]="true"
+  [addDetails]="true"
+  [preprocessingHook]="toUpperCaseHook"
+  [postprocessingHook]="toLowerCaseHook"
+  [suggestionsFilter]="filterByLength"
+  (placeSelect)="placeSelected($event)"
+  (suggestionsChange)="suggestionsChanged($event)"
+  (userInput)="userInput($event)">
+</geoapify-geocoder-autocomplete>
