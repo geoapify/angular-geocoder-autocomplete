@@ -22,7 +22,7 @@
     "@geoapify/geocoder-autocomplete": "^2.0.1",
     "rxjs": "^7.8.1",
     "tslib": "^2.7.0",
-    "zone.js": "^0.15.0"
+    "zone.js": "^0.14.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.4",
