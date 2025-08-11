@@ -3,8 +3,8 @@
   "version": "2.0.2",
   "description": "Angular component for the Geoapify Geocoder Autocomplete library",
   "peerDependencies": {
-    "@angular/common": "17.0.0 - 18.99999.99999",
-    "@angular/core": "17.0.0 - 18.99999.99999",
+    "@angular/common": "19.0.0 - 20.99999.99999",
+    "@angular/core": "19.0.0 - 20.99999.99999",
     "@geoapify/geocoder-autocomplete": "^2.0.0"
   },
   "dependencies": {
