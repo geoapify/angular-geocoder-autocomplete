@@ -1,1 +1,8 @@
-@import "@geoapify/geocoder-autocomplete/styles/minimal.css";
+/* Start with no theme imported - will be loaded dynamically */
+
+/* Global dark theme styles */
+body.theme-minimal-dark,
+body.theme-round-borders-dark {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}

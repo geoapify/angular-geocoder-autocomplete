@@ -93,6 +93,19 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   @Input()
   debounceDelay: number;
 
+  // TODO: add mappings
+  @Input()
+  allowNonVerifiedHouseNumber: boolean;
+
+  @Input()
+  allowNonVerifiedStreet: boolean;
+
+  @Input()
+  skipDetails: boolean;
+
+  @Input()
+  skipSelectionOnArrowKey: boolean;
+
   @Input()
   preprocessingHook: (value: string) => string;
 
@@ -122,6 +135,13 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
   @Output()
   close: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  // TODO: add mappings
+  @Output()
+  requestStart: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  requestEnd: EventEmitter<any> = new EventEmitter<any>();
 
   private onSelectEventFunction: any;
   private onSuggestionsEventFunction: any;
