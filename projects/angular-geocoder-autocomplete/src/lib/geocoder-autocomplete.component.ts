@@ -32,7 +32,8 @@ import { GeoapifyConfig, GEOAPIFY_CONFIG } from './geoapify-config';
   template: '<div class="geocoder-container" #container></div>',
   styles: [
     '.geocoder-container {position: relative}'
-  ]
+  ],
+  standalone: false
 })
 export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
