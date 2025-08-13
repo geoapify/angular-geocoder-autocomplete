@@ -93,15 +93,11 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   @Input()
   debounceDelay: number;
 
-  // TODO: add mappings
   @Input()
   allowNonVerifiedHouseNumber: boolean;
 
   @Input()
   allowNonVerifiedStreet: boolean;
-
-  @Input()
-  skipDetails: boolean;
 
   @Input()
   skipSelectionOnArrowKey: boolean;
@@ -136,7 +132,6 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   @Output()
   close: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  // TODO: add mappings
   @Output()
   requestStart: EventEmitter<any> = new EventEmitter<any>();
 
@@ -184,6 +179,18 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
     if (this.addDetails) {
       options.addDetails = this.addDetails;
+    }
+
+    if (this.allowNonVerifiedHouseNumber !== undefined) {
+      options.allowNonVerifiedHouseNumber = this.allowNonVerifiedHouseNumber;
+    }
+
+    if (this.allowNonVerifiedStreet !== undefined) {
+      options.allowNonVerifiedStreet = this.allowNonVerifiedStreet;
+    }
+
+    if (this.skipSelectionOnArrowKey !== undefined) {
+      options.skipSelectionOnArrowKey = this.skipSelectionOnArrowKey;
     }
 
     this.autocomplete = new GeocoderAutocomplete(this.container.nativeElement, this.config.apiKey, options);
@@ -255,6 +262,8 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     this.autocomplete.on('input', this.onInput.bind(this));
     this.autocomplete.on('open', this.onOpen.bind(this));
     this.autocomplete.on('close', this.onClose.bind(this));
+    this.autocomplete.on('request_start', this.onRequestStart.bind(this));
+    this.autocomplete.on('request_end', this.onRequestEnd.bind(this));
   }
 
   onSelect(value: any) {
@@ -275,6 +284,14 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
   onClose(opened: boolean) {
     this.close.emit(opened);
+  }
+
+  onRequestStart(value: any) {
+    this.requestStart.emit(value);
+  }
+
+  onRequestEnd(value: any) {
+    this.requestEnd.emit(value);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -364,6 +381,16 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
       !changes['suggestionsFilter'].isFirstChange()) {
       this.autocomplete.setSuggestionsFilter(changes['suggestionsFilter'].currentValue);
     }
+
+    if (changes['allowNonVerifiedHouseNumber'] &&
+      !changes['allowNonVerifiedHouseNumber'].isFirstChange()) {
+      this.autocomplete.setAllowNonVerifiedHouseNumber(changes['allowNonVerifiedHouseNumber'].currentValue);
+    }
+
+    if (changes['allowNonVerifiedStreet'] &&
+      !changes['allowNonVerifiedStreet'].isFirstChange()) {
+      this.autocomplete.setAllowNonVerifiedStreet(changes['allowNonVerifiedStreet'].currentValue);
+    }
   }
 
   ngOnDestroy() {
@@ -372,5 +399,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     this.autocomplete.off('input');
     this.autocomplete.off('open');
     this.autocomplete.off('close');
+    this.autocomplete.off('request_start');
+    this.autocomplete.off('request_end');
   }
 }

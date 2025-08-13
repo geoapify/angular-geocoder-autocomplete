@@ -127,12 +127,17 @@ For further details on available styles, CSS classes and customization options, 
     [biasByProximity]="biasByProximity"
     [skipIcons]="true"
     [addDetails]="true"
+    [allowNonVerifiedHouseNumber]="true"
+    [allowNonVerifiedStreet]="true"
+    [skipSelectionOnArrowKey]="false"
     [preprocessingHook]="preprocessingHook"
     [postprocessingHook]="postprocessingHook"
     [suggestionsFilter]="suggestionsFilter"
     (placeSelect)="placeSelected($event)" 
     (suggestionsChange)="suggestionsChanged($event)"
-    (userInput)="userInput($event)">
+    (userInput)="userInput($event)"
+    (requestStart)="requestStarted($event)"
+    (requestEnd)="requestEnded($event)">
 </geoapify-geocoder-autocomplete>
 ```
 
@@ -157,6 +162,9 @@ Here is the comprehensive list of input and output properties. Learn how to conf
 | `biasByProximity: GeocoderAutocomplete.ByProximityOptions` | Bias suggestions by proximity to a location.                                                       |
 | `limit: number`                 | The maximum number of suggestions to display.                                                             |
 | `debounceDelay: number`         | The debounce delay for input changes in milliseconds.                                                      |
+| `allowNonVerifiedHouseNumber: boolean` | Allows input of house numbers that may not be verified in the geocoding database.                          |
+| `allowNonVerifiedStreet: boolean` | Allows input of street names that may not be verified in the geocoding database.                           |
+| `skipSelectionOnArrowKey: boolean` | When true, prevents automatic selection when navigating suggestions with arrow keys.                        |
 | *preprocessingHook: (value: string) => string* | A function to preprocess the input value before sending requests.                               |
 | *postprocessingHook: (feature: [GeoJSON.Feature](https://en.wikipedia.org/wiki/GeoJSON)) => string* | A function to process and modify the selected place feature before display.                  |
 | *suggestionsFilter: (suggestions: [GeoJSON.Feature](https://en.wikipedia.org/wiki/GeoJSON)[]) => [GeoJSON.Feature](https://en.wikipedia.org/wiki/GeoJSON)[]* | A function to filter and modify the suggestions list before display.                           |
@@ -173,6 +181,8 @@ Here are the component outputs:
 | `userInput: EventEmitter<string>`         | Emits the user's input as a string when they interact with the input field.                   |
 | `open: EventEmitter<boolean>`             | Emits a boolean value indicating when the suggestions dropdown opens.                             |
 | `close: EventEmitter<boolean>`            | Emits a boolean value indicating when the suggestions dropdown closes.                             |
+| `requestStart: EventEmitter<any>`         | Emits an event when a geocoding request begins (after debounce delay).                            |
+| `requestEnd: EventEmitter<any>`           | Emits an event when a geocoding request completes (success or failure).                           |
 
 The component itself doesn't have a dependency on [@types/geojson](https://www.npmjs.com/package/@types/geojson). However, if you wish to work with GeoJSON types in your application, you can install it as an additional package.
 
