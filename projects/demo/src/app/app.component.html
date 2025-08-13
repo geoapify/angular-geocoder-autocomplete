@@ -17,7 +17,6 @@
           [value]="streetValue"
           [allowNonVerifiedHouseNumber]="true"
           [allowNonVerifiedStreet]="true"
-          [skipDetails]="true"
           [skipIcons]="true"
           [placeholder]="' '"
           [skipSelectionOnArrowKey]="true"
@@ -56,7 +55,6 @@
         <geoapify-geocoder-autocomplete
           [value]="cityValue"
           [type]="'city'"
-          [skipDetails]="true"
           [placeholder]="' '"
           [skipIcons]="false"
           (placeSelect)="onCitySelected($event)"
@@ -84,7 +82,6 @@
         <geoapify-geocoder-autocomplete
           [value]="stateValue"
           [type]="'state'"
-          [skipDetails]="true"
           [placeholder]="' '"
           [skipIcons]="true"
           (placeSelect)="onStateSelected($event)"
@@ -101,7 +98,6 @@
         <geoapify-geocoder-autocomplete
           [value]="countryValue"
           [type]="'country'"
-          [skipDetails]="true"
           [placeholder]="' '"
           [skipIcons]="false"
           (placeSelect)="onCountrySelected($event)"
