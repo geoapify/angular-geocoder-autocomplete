@@ -151,6 +151,9 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   }
 
   ngAfterViewInit() {
+    if(typeof document === 'undefined') {
+      return;
+    }
     const options: GeocoderAutocompleteOptions = {};
 
     if (this.placeholder) {
