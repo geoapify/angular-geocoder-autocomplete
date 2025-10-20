@@ -1,6 +1,6 @@
 {
   "name": "@geoapify/angular-geocoder-autocomplete",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Angular component for the Geoapify Geocoder Autocomplete library",
   "peerDependencies": {
     "@angular/common": "19.0.0 - 20.99999.99999",
