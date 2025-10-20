@@ -151,6 +151,9 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   }
 
   ngAfterViewInit() {
+    if(typeof document === 'undefined') {
+      return;
+    }
     const options: GeocoderAutocompleteOptions = {};
 
     if (this.placeholder) {
@@ -394,12 +397,14 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   }
 
   ngOnDestroy() {
-    this.autocomplete.off('select');
-    this.autocomplete.off('suggestions');
-    this.autocomplete.off('input');
-    this.autocomplete.off('open');
-    this.autocomplete.off('close');
-    this.autocomplete.off('request_start');
-    this.autocomplete.off('request_end');
+    if(this.autocomplete) {
+      this.autocomplete.off('select');
+      this.autocomplete.off('suggestions');
+      this.autocomplete.off('input');
+      this.autocomplete.off('open');
+      this.autocomplete.off('close');
+      this.autocomplete.off('request_start');
+      this.autocomplete.off('request_end');
+    }
   }
 }
