@@ -1,6 +1,7 @@
 .address-collection-container {
+    width: 100%;
     max-width: 500px;
-    margin: auto;
+    margin: 0; /* Remove auto margin since it's now in columns */
 }
 
 .autocomplete-container {
@@ -129,4 +130,44 @@
         border-color: #444;
         border-top-color: #4dabf7;
     }
+}
+
+/* Two-column demo layout */
+.demo-container {
+    display: flex;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.demo-column {
+    flex: 1;
+    min-width: 0; /* Allows flex item to shrink below content width */
+}
+
+.demo-column h3 {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Responsive design - stack on mobile */
+@media (max-width: 768px) {
+    .demo-container {
+        flex-direction: column;
+        gap: 30px;
+        padding: 10px;
+    }
+    
+    .demo-column {
+        width: 100%;
+    }
+}
+
+/* Dark theme support for demo columns */
+body.theme-minimal-dark .demo-column h3,
+body.theme-round-borders-dark .demo-column h3 {
+    color: #e0e0e0 !important;
+    border-bottom-color: #4dabf7 !important;
 }

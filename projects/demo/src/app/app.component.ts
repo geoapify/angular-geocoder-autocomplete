@@ -1,4 +1,6 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Category } from '@geoapify/geocoder-autocomplete';
+import { GeocoderAutocompleteComponent } from '../../../angular-geocoder-autocomplete/src/lib/geocoder-autocomplete.component';
 
 @Component({
     selector: 'app-root',
@@ -31,8 +33,17 @@ export class AppComponent implements OnInit {
     street: false,
     city: false,
     state: false,
-    country: false
+    country: false,
+    category: false
   };
+
+  // New category search properties
+  categorySearchValue = '';
+  currentCategory: Category | null = null;
+  selectedPlace: any = null;
+  placesResults: any[] = [];
+
+  @ViewChild('categoryAutocomplete') categoryAutocomplete?: GeocoderAutocompleteComponent;
 
   private readonly myAPIKey = 'API_KEY_HERE'; // Replace with your actual API key
 
@@ -51,7 +62,7 @@ export class AppComponent implements OnInit {
     this.renderer.setAttribute(themeLink, 'type', 'text/css');
     this.renderer.setAttribute(themeLink, 'data-geoapify-theme', 'true');
 
-    const cdnUrl = `https://unpkg.com/@geoapify/geocoder-autocomplete@2.1.0/styles/${themeName}.css`;
+    const cdnUrl = `https://unpkg.com/@geoapify/geocoder-autocomplete@3.0.0-rc.1/styles/${themeName}.css`;
     this.renderer.setAttribute(themeLink, 'href', cdnUrl);
     this.renderer.appendChild(document.head, themeLink);
 
@@ -196,5 +207,69 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       this.showWarnings = false;
     }, 3000);
+  }
+
+  // Category search methods
+  onCategoryPlaceSelected(place: any) {
+    this.selectedPlace = place;
+  }
+
+  onPlacesReceived(places: any) {
+    this.placesResults = places || [];
+  }
+
+  onSpecificPlaceSelected(place: any) {
+    this.selectedPlace = place;
+  }
+
+  onCategoryCleared(event: any) {
+    this.currentCategory = null;
+    this.selectedPlace = null;
+    this.placesResults = [];
+  }
+
+  async selectRestaurantCategory() {
+    const category: Category = {
+      keys: ['restaurant', 'fast_food', 'cafe'],
+      label: 'Restaurants'
+    };
+    
+    if (this.categoryAutocomplete) {
+      await this.categoryAutocomplete.selectCategory(category);
+      this.currentCategory = category;
+    }
+  }
+
+  async selectHotelCategory() {
+    const category: Category = {
+      keys: ['accommodation', 'hotel'],
+      label: 'Hotels'
+    };
+    
+    if (this.categoryAutocomplete) {
+      await this.categoryAutocomplete.selectCategory(category);
+      this.currentCategory = category;
+    }
+  }
+
+  async selectShoppingCategory() {
+    const category: Category = {
+      keys: ['shop', 'mall', 'supermarket'],
+      label: 'Shopping'
+    };
+    
+    if (this.categoryAutocomplete) {
+      await this.categoryAutocomplete.selectCategory(category);
+      this.currentCategory = category;
+    }
+  }
+
+  async clearCategory() {
+    if (this.categoryAutocomplete) {
+      await this.categoryAutocomplete.clearCategory();
+      this.currentCategory = null;
+      this.selectedPlace = null;
+      this.placesResults = [];
+    }
   }
 }

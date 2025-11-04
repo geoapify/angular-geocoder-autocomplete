@@ -8,109 +8,166 @@
   </select>
 </div>
 
-<div class="address-collection-container">
-  <div class="address-row">
-    <div class="address-field-with-label main-part margin-right">
-      <label>Street:</label><br>
-      <div class="address-field autocomplete-container">
-        <geoapify-geocoder-autocomplete
-          [value]="streetValue"
-          [allowNonVerifiedHouseNumber]="true"
-          [allowNonVerifiedStreet]="true"
-          [skipIcons]="true"
-          [placeholder]="' '"
-          [skipSelectionOnArrowKey]="true"
-          (placeSelect)="onStreetSelected($event)"
-          (requestStart)="showSpinner('street')"
-          (requestEnd)="hideSpinner('street')">
-        </geoapify-geocoder-autocomplete>
-        <div class="loading-spinner" [style.display]="spinners.street ? 'block' : 'none'"></div>
-      </div>
-    </div>
+<div class="demo-container">
+  <div class="demo-column">
+    <h3 style="margin-bottom: 20px;">Simple Address Form</h3>
 
-    <div class="address-field-with-label">
-      <label for="housenumber">House number:</label><br>
-      <input
-        id="housenumber"
-        class="geoapify-autocomplete-input small-input"
-        [(ngModel)]="formData.housenumber"
-        [class.warning-input]="showWarnings && !formData.housenumber"/>
+    <div class="address-collection-container">
+      <div class="address-row">
+        <div class="address-field-with-label main-part margin-right">
+          <label>Street:</label><br>
+          <div class="address-field autocomplete-container">
+            <geoapify-geocoder-autocomplete
+              [value]="streetValue"
+              [allowNonVerifiedHouseNumber]="true"
+              [allowNonVerifiedStreet]="true"
+              [skipIcons]="true"
+              [placeholder]="' '"
+              [skipSelectionOnArrowKey]="true"
+              (placeSelect)="onStreetSelected($event)"
+              (requestStart)="showSpinner('street')"
+              (requestEnd)="hideSpinner('street')">
+            </geoapify-geocoder-autocomplete>
+            <div class="loading-spinner" [style.display]="spinners.street ? 'block' : 'none'"></div>
+          </div>
+        </div>
+
+        <div class="address-field-with-label">
+          <label for="housenumber">House number:</label><br>
+          <input
+            id="housenumber"
+            class="geoapify-autocomplete-input small-input"
+            [(ngModel)]="formData.housenumber"
+            [class.warning-input]="showWarnings && !formData.housenumber"/>
+        </div>
+      </div>
+
+      <div class="address-row">
+        <div class="address-field-with-label main-part">
+          <label for="address-additional">Apartment, suite (optional):</label><br>
+          <input
+            id="address-additional"
+            class="geoapify-autocomplete-input"
+            [(ngModel)]="formData.additional"/>
+        </div>
+      </div>
+
+      <div class="address-row">
+        <div class="address-field-with-label main-part margin-right">
+          <label>City:</label><br>
+          <div class="address-field autocomplete-container">
+            <geoapify-geocoder-autocomplete
+              [value]="cityValue"
+              [type]="'city'"
+              [placeholder]="' '"
+              [skipIcons]="false"
+              (placeSelect)="onCitySelected($event)"
+              (requestStart)="showSpinner('city')"
+              (requestEnd)="hideSpinner('city')">
+            </geoapify-geocoder-autocomplete>
+            <div class="loading-spinner" [style.display]="spinners.city ? 'block' : 'none'"></div>
+          </div>
+        </div>
+
+        <div class="address-field-with-label">
+          <label for="postcode">ZIP code:</label><br>
+          <input
+            id="postcode"
+            class="geoapify-autocomplete-input small-input"
+            [(ngModel)]="formData.postcode"
+            [class.warning-input]="showWarnings && !formData.postcode"/>
+        </div>
+      </div>
+
+      <div class="address-row">
+        <div class="address-field-with-label main-part margin-right">
+          <label>State:</label><br>
+          <div class="address-field autocomplete-container">
+            <geoapify-geocoder-autocomplete
+              [value]="stateValue"
+              [type]="'state'"
+              [placeholder]="' '"
+              [skipIcons]="true"
+              (placeSelect)="onStateSelected($event)"
+              (requestStart)="showSpinner('state')"
+              (requestEnd)="hideSpinner('state')">
+            </geoapify-geocoder-autocomplete>
+            <div class="loading-spinner" [style.display]="spinners.state ? 'block' : 'none'"></div>
+          </div>
+        </div>
+
+        <div class="address-field-with-label main-part">
+          <label>Country:</label><br>
+          <div class="address-field autocomplete-container">
+            <geoapify-geocoder-autocomplete
+              [value]="countryValue"
+              [type]="'country'"
+              [placeholder]="' '"
+              [skipIcons]="false"
+              (placeSelect)="onCountrySelected($event)"
+              (requestStart)="showSpinner('country')"
+              (requestEnd)="hideSpinner('country')">
+            </geoapify-geocoder-autocomplete>
+            <div class="loading-spinner" [style.display]="spinners.country ? 'block' : 'none'"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="message-container">{{ message }}</div>
+      <div class="button-container">
+        <button (click)="checkAddress()">Check address</button>
+      </div>
     </div>
   </div>
 
-  <div class="address-row">
-    <div class="address-field-with-label main-part">
-      <label for="address-additional">Apartment, suite (optional):</label><br>
-      <input
-        id="address-additional"
-        class="geoapify-autocomplete-input"
-        [(ngModel)]="formData.additional"/>
-    </div>
-  </div>
+  <div class="demo-column">
+    <h3 style="margin-bottom: 20px;">Category & Places Search (v3.0.0)</h3>
 
-  <div class="address-row">
-    <div class="address-field-with-label main-part margin-right">
-      <label>City:</label><br>
-      <div class="address-field autocomplete-container">
-        <geoapify-geocoder-autocomplete
-          [value]="cityValue"
-          [type]="'city'"
-          [placeholder]="' '"
-          [skipIcons]="false"
-          (placeSelect)="onCitySelected($event)"
-          (requestStart)="showSpinner('city')"
-          (requestEnd)="hideSpinner('city')">
-        </geoapify-geocoder-autocomplete>
-        <div class="loading-spinner" [style.display]="spinners.city ? 'block' : 'none'"></div>
+    <div class="address-collection-container">
+      <div class="address-row">
+        <div class="address-field-with-label main-part">
+          <label>Search places by category:</label><br>
+          <div class="address-field autocomplete-container">
+            <geoapify-geocoder-autocomplete
+              #categoryAutocomplete
+              [value]="categorySearchValue"
+              [addCategorySearch]="true"
+              [showPlacesList]="true"
+              [enablePlacesLazyLoading]="true"
+              [placesLimit]="5"
+              [hidePlacesListAfterSelect]="false"
+              [placeholder]="'Enter place name or select category...'"
+              (placeSelect)="onCategoryPlaceSelected($event)"
+              (places)="onPlacesReceived($event)"
+              (placeSelectEvent)="onSpecificPlaceSelected($event)"
+              (clear)="onCategoryCleared($event)"
+              (placesRequestStart)="showSpinner('category')"
+              (placesRequestEnd)="hideSpinner('category')"
+              (placeDetailsRequestStart)="showSpinner('category')"
+              (placeDetailsRequestEnd)="hideSpinner('category')"
+              (requestStart)="showSpinner('category')"
+              (requestEnd)="hideSpinner('category')">
+            </geoapify-geocoder-autocomplete>
+            <div class="loading-spinner" [style.display]="spinners.category ? 'block' : 'none'"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-container" style="text-align: left; margin-top: 10px;">
+        <button (click)="selectRestaurantCategory()" style="margin-right: 5px; font-size: 12px;">Restaurants</button>
+        <button (click)="selectHotelCategory()" style="margin-right: 5px; font-size: 12px;">Hotels</button>
+        <button (click)="selectShoppingCategory()" style="margin-right: 5px; font-size: 12px;">Shopping</button>
+        <button (click)="clearCategory()" style="font-size: 12px;">Clear</button>
+      </div>
+
+      <div class="message-container" *ngIf="currentCategory">
+        Active category: <strong>{{ currentCategory.label }}</strong>
+      </div>
+
+      <div class="message-container" *ngIf="selectedPlace" style="margin-top: 15px; padding: 10px; background: #f9f9f9; border-left: 3px solid #007bff;">
+        <strong>{{ selectedPlace.properties?.name || 'Selected Place' }}</strong><br>
+        <small>{{ selectedPlace.properties?.formatted || 'No address available' }}</small>
       </div>
     </div>
-
-    <div class="address-field-with-label">
-      <label for="postcode">ZIP code:</label><br>
-      <input
-        id="postcode"
-        class="geoapify-autocomplete-input small-input"
-        [(ngModel)]="formData.postcode"
-        [class.warning-input]="showWarnings && !formData.postcode"/>
-    </div>
-  </div>
-
-  <div class="address-row">
-    <div class="address-field-with-label main-part margin-right">
-      <label>State:</label><br>
-      <div class="address-field autocomplete-container">
-        <geoapify-geocoder-autocomplete
-          [value]="stateValue"
-          [type]="'state'"
-          [placeholder]="' '"
-          [skipIcons]="true"
-          (placeSelect)="onStateSelected($event)"
-          (requestStart)="showSpinner('state')"
-          (requestEnd)="hideSpinner('state')">
-        </geoapify-geocoder-autocomplete>
-        <div class="loading-spinner" [style.display]="spinners.state ? 'block' : 'none'"></div>
-      </div>
-    </div>
-
-    <div class="address-field-with-label main-part">
-      <label>Country:</label><br>
-      <div class="address-field autocomplete-container">
-        <geoapify-geocoder-autocomplete
-          [value]="countryValue"
-          [type]="'country'"
-          [placeholder]="' '"
-          [skipIcons]="false"
-          (placeSelect)="onCountrySelected($event)"
-          (requestStart)="showSpinner('country')"
-          (requestEnd)="hideSpinner('country')">
-        </geoapify-geocoder-autocomplete>
-        <div class="loading-spinner" [style.display]="spinners.country ? 'block' : 'none'"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="message-container">{{ message }}</div>
-  <div class="button-container">
-    <button (click)="checkAddress()">Check address</button>
   </div>
 </div>
