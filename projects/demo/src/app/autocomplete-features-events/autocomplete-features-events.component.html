@@ -1,0 +1,97 @@
+<div class="container">
+  <h1>Events Demo — Full GeocoderAutocomplete Event Showcase</h1>
+  <p class="hint">Toggle event listeners to see what the component emits. Logs update in real time with event name, timestamp, and a compact payload.</p>
+
+  <div class="panel">
+    <h3>1. Autocomplete</h3>
+    <div class="autocomplete-container">
+      <geoapify-geocoder-autocomplete
+        #autocomplete
+        [showPlacesList]="true"
+        [enablePlacesLazyLoading]="true"
+        [limit]="8"
+        [hidePlacesListAfterSelect]="true"
+        [skipIcons]="false"
+        [placeholder]="'Type to search addresses or categories…'"
+        [addCategorySearch]="options.addCategorySearch"
+        [addDetails]="options.addDetails"
+        [debounceDelay]="options.debounceDelay"
+        (input)="onInput($event)"
+        (requestStart)="onRequestStart($event)"
+        (requestEnd)="onRequestEnd($event)"
+        (suggestionsChange)="onSuggestions($event)"
+        (placeSelect)="onSelect($event)"
+        (open)="onOpen($event)"
+        (close)="onClose($event)"
+        (clear)="onClear($event)"
+        (placeDetailsRequestStart)="onPlaceDetailsRequestStart($event)"
+        (placeDetailsRequestEnd)="onPlaceDetailsRequestEnd($event)"
+        (placesRequestStart)="onPlacesRequestStart($event)"
+        (placesRequestEnd)="onPlacesRequestEnd($event)"
+        (places)="onPlaces($event)"
+        (placeSelectEvent)="onPlaceSelectEvent($event)">
+      </geoapify-geocoder-autocomplete>
+    </div>
+    <div class="hint" style="margin-top:6px;">Tip: Category mode is enabled to show Places-related events as well.</div>
+  </div>
+
+  <div class="panel">
+    <h3>2. Options</h3>
+    <div class="hint">Options overview:</div>
+    <ul class="hint" style="margin:6px 0 10px 18px;">
+      <li><code>debounceDelay?: number</code> — controls how long to wait after typing before sending a request.</li>
+      <li><code>addDetails?: boolean</code> — calls the Place Details API to fetch place geometry and extra attributes.</li>
+      <li><code>addCategorySearch?: boolean</code> — enables searching places by categories (e.g., restaurants, parks).</li>
+    </ul>
+    <div class="row" style="margin-top:8px; gap:18px; align-items:center;">
+      <label>debounceDelay (ms)
+        <input
+          [(ngModel)]="optionsForm.debounceDelay"
+          type="number"
+          min="0"
+          step="50"
+          style="width:120px;">
+      </label>
+      <label>
+        <input
+          [(ngModel)]="optionsForm.addDetails"
+          type="checkbox"> addDetails
+      </label>
+      <label>
+        <input
+          [(ngModel)]="optionsForm.addCategorySearch"
+          type="checkbox"> addCategorySearch
+      </label>
+      <button (click)="applyOptions()">Apply Options</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>3. Events</h3>
+    <div class="event-grid">
+      <label *ngFor="let event of events" style="display:flex; gap:8px; align-items:center;">
+        <input
+          type="checkbox"
+          [(ngModel)]="event.enabled"
+          (change)="toggleEvent(event)">
+        <span>{{ event.label }}</span>
+      </label>
+    </div>
+    <div style="margin-top:10px; display:flex; gap:8px;">
+      <button (click)="enableAllEvents()">Enable All</button>
+      <button (click)="disableAllEvents()">Disable All</button>
+      <button (click)="clearLog()">Clear Log</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Console</h3>
+    <div #consoleElement class="console" aria-live="polite">
+      <div *ngFor="let log of consoleLogs" class="line">
+        <span class="ts">{{ log.timestamp }}</span>
+        <span class="evt">{{ log.event }}</span>
+        <span class="payload">{{ log.payload }}</span>
+      </div>
+    </div>
+  </div>
+</div>

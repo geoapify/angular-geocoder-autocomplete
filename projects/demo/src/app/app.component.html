@@ -1,173 +1,91 @@
-<div class="theme-selector">
-  <span class="theme-label">Theme:</span>
-  <select [(ngModel)]="selectedTheme" (change)="setTheme(selectedTheme)">
-    <option value="minimal">Light</option>
-    <option value="minimal-dark">Dark</option>
-    <option value="round-borders">Light (Round)</option>
-    <option value="round-borders-dark">Dark (Round)</option>
-  </select>
+<!-- Demo Index Page -->
+<div *ngIf="isIndexPage" class="demo-index">
+
+  <div class="container">
+
+    <h1 class="brand-title">
+      <span class="brand-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" class="" viewBox="0 0 66.145832 66.145835"
+          version="1.1">
+          <g transform="translate(0,-230.85415)">
+            <g id="g1644" transform="matrix(7.218137,0,0,7.218137,737.87653,1482.3405)">
+              <g transform="matrix(0.36807926,0,0,0.36807926,-36.510506,-111.70966)" style="fill:#6d62c7;fill-opacity:1"
+                id="g7894">
+                <g id="g7150-8" style="fill:#6d62c7;fill-opacity:1">
+                  <path id="use7148-2"
+                    d="m -171.43659,-150.59598 h 2.80723 l 0.16139,0.23812 0.24871,0.36777 0.254,0.37307 0.25929,0.38629 0.2593,0.39158 0.26458,0.39952 0.26987,0.41011 0.27252,0.42068 0.27517,0.42863 0.27781,0.43656 0.27782,-0.43656 0.27516,-0.42863 0.27252,-0.42068 0.26723,-0.41011 0.26723,-0.39952 0.25929,-0.39158 0.2593,-0.38629 0.254,-0.37307 0.2487,-0.36777 0.1614,-0.23812 h 2.80723 l 3.30464,4.29419 -8.65452,2.65377 v 0 l -8.65452,-2.65377 z"
+                    style="fill:#6d62c7;fill-opacity:1;stroke-width:0.26458332"></path>
+                </g>
+                <g id="g7154-0" style="fill:#6d62c7;fill-opacity:1">
+                  <path id="use7152-2"
+                    d="m -165.58665,-166.53448 0.2487,0.0291 0.24078,0.0344 0.24077,0.045 0.23812,0.0556 0.23548,0.0661 0.22754,0.0741 0.22754,0.0847 0.21961,0.0926 0.21696,0.10054 0.21431,0.10848 0.20637,0.11906 0.20373,0.127 0.19579,0.1323 0.19315,0.14287 0.18521,0.14552 0.18256,0.15611 0.17463,0.16404 0.16933,0.16933 0.16404,0.17463 0.15346,0.1852 0.15346,0.18786 0.14023,0.19579 0.13758,0.20108 0.127,0.20638 0.11906,0.20902 0.11377,0.21696 0.10584,0.22225 0.0979,0.22489 0.0873,0.23284 0.0794,0.23548 0.0741,0.24077 0.0582,0.24341 0.0556,0.24607 0.045,0.25135 0.0344,0.254 0.0265,0.25665 0.0132,0.25929 0.005,0.26193 -0.005,0.26459 -0.0132,0.25929 -0.0265,0.25929 -0.0344,0.25929 -0.045,0.254 -0.0556,0.25665 -0.0582,0.25135 -0.0741,0.25665 -0.0794,0.25135 -0.0873,0.254 -0.0979,0.254 -0.10584,0.25665 -0.11377,0.254 -0.11906,0.25929 -0.127,0.25929 -0.13758,0.25929 -0.14023,0.26459 -0.15346,0.26458 -0.15346,0.26988 -0.16404,0.26987 -0.16933,0.27517 -0.17463,0.28046 -0.18256,0.2831 -0.18521,0.2884 -0.19315,0.29368 -0.39952,0.59796 -0.20637,0.30956 -0.21431,0.31221 -0.21696,0.32279 -0.21961,0.32544 -0.22754,0.33338 -0.22754,0.33866 -0.23548,0.34925 -0.23812,0.35455 -0.24077,0.36247 -0.24078,0.37042 -0.2487,0.38365 -0.24871,0.38629 -0.25136,0.39952 -0.254,-0.39952 -0.24606,-0.38629 -0.24871,-0.38365 -0.24077,-0.37042 -0.24077,-0.36247 -0.23812,-0.35455 -0.23548,-0.34925 -0.22755,-0.33866 -0.22754,-0.33338 -0.2196,-0.32544 -0.21696,-0.32279 -0.21431,-0.31221 -0.20638,-0.30956 -0.39952,-0.59796 -0.19314,-0.29368 -0.18786,-0.2884 -0.17991,-0.2831 -0.17463,-0.28046 -0.16933,-0.27517 -0.16404,-0.26987 -0.15611,-0.26988 -0.15081,-0.26458 -0.14023,-0.26459 -0.13758,-0.25929 -0.127,-0.25929 -0.12171,-0.25929 -0.11377,-0.254 -0.10319,-0.25665 -0.0979,-0.254 -0.0873,-0.254 -0.0794,-0.25135 -0.0741,-0.25665 -0.0609,-0.25135 -0.0556,-0.25665 -0.0423,-0.254 -0.0344,-0.25929 -0.0265,-0.25929 -0.0159,-0.25929 -0.003,-0.26459 0.003,-0.26193 0.0159,-0.25929 0.0265,-0.25665 0.0344,-0.254 0.0423,-0.25135 0.0556,-0.24607 0.0609,-0.24341 0.0741,-0.24077 0.0794,-0.23548 0.0873,-0.23284 0.0979,-0.22489 0.10319,-0.22225 0.11377,-0.21696 0.12171,-0.20902 0.127,-0.20638 0.13758,-0.20108 0.14023,-0.19579 0.15081,-0.18786 0.15611,-0.1852 0.16404,-0.17463 0.16933,-0.16933 0.17463,-0.16404 0.17991,-0.15611 0.18786,-0.14552 0.19314,-0.14287 0.19579,-0.1323 0.20373,-0.127 0.20638,-0.11906 0.21431,-0.10848 0.21696,-0.10054 0.2196,-0.0926 0.22754,-0.0847 0.22755,-0.0741 0.23548,-0.0661 0.23812,-0.0556 0.24077,-0.045 0.24077,-0.0344 0.24871,-0.0291 0.24606,-0.0132 0.254,-0.005 0.25136,0.005 z m -0.73819,3.01096 -0.11642,0.0132 -0.11642,0.0132 -0.11377,0.0238 -0.11112,0.0238 -0.11113,0.0344 -0.10847,0.0344 -0.10584,0.0397 -0.10583,0.045 -0.10319,0.0476 -0.10054,0.0503 -0.0979,0.0556 -0.0952,0.0608 -0.0953,0.0635 -0.0926,0.0661 -0.0873,0.0688 -0.0873,0.0741 -0.0794,0.0794 -0.082,0.0794 -0.0767,0.0847 -0.0741,0.0847 -0.0714,0.09 -0.0688,0.0926 -0.0609,0.0952 -0.0608,0.0979 -0.0582,0.10055 -0.0529,0.10054 -0.0979,0.21166 -0.0397,0.11113 -0.037,0.11112 -0.037,0.11377 -0.0265,0.11378 -0.0265,0.11906 -0.0212,0.11906 -0.0159,0.11906 -0.0132,0.12436 -0.008,0.12171 -0.003,0.12435 0.003,0.12435 0.008,0.12436 0.0132,0.12171 0.0159,0.11906 0.0212,0.11906 0.0265,0.11642 0.0265,0.11377 0.037,0.11377 0.037,0.11112 0.0397,0.11113 0.0979,0.21431 0.0529,0.10054 0.0582,0.10055 0.0608,0.0979 0.0609,0.0952 0.0688,0.0926 0.0714,0.0873 0.0741,0.0873 0.0767,0.082 0.082,0.082 0.0794,0.0794 0.0873,0.0714 0.0873,0.0714 0.0926,0.0661 0.0953,0.0635 0.0952,0.0608 0.0979,0.0556 0.10054,0.0529 0.10319,0.045 0.10583,0.045 0.10584,0.037 0.10847,0.037 0.11113,0.0317 0.11112,0.0265 0.11377,0.0212 0.11642,0.0185 0.11642,0.0106 0.11906,0.008 0.11906,0.003 0.11907,-0.003 0.11906,-0.008 0.11642,-0.0106 0.11641,-0.0185 0.11377,-0.0212 0.11113,-0.0265 0.11112,-0.0317 0.10848,-0.037 0.10584,-0.037 0.10583,-0.045 0.10319,-0.045 0.10054,-0.0529 0.0979,-0.0556 0.0952,-0.0608 0.0953,-0.0635 0.0926,-0.0661 0.0873,-0.0714 0.0847,-0.0714 0.082,-0.0794 0.082,-0.082 0.0767,-0.082 0.0741,-0.0873 0.0714,-0.0873 0.0661,-0.0926 0.0635,-0.0952 0.0609,-0.0979 0.0582,-0.10055 0.0529,-0.10054 0.0952,-0.21431 0.0423,-0.11113 0.037,-0.11112 0.0344,-0.11377 0.0291,-0.11377 0.0265,-0.11642 0.0212,-0.11906 0.0159,-0.11906 0.0132,-0.12171 0.005,-0.12436 0.003,-0.12435 -0.003,-0.12435 -0.005,-0.12171 -0.0132,-0.12436 -0.0159,-0.11906 -0.0212,-0.11906 -0.0265,-0.11906 -0.0291,-0.11378 -0.0344,-0.11377 -0.037,-0.11112 -0.0423,-0.11113 -0.0952,-0.21166 -0.0529,-0.10054 -0.0582,-0.10055 -0.0609,-0.0979 -0.0635,-0.0952 -0.0661,-0.0926 -0.0714,-0.09 -0.0741,-0.0847 -0.0767,-0.0847 -0.082,-0.0794 -0.082,-0.0794 -0.0847,-0.0741 -0.0873,-0.0688 -0.0926,-0.0661 -0.0953,-0.0635 -0.0952,-0.0608 -0.0979,-0.0556 -0.10054,-0.0503 -0.10319,-0.0476 -0.10583,-0.045 -0.10584,-0.0397 -0.10848,-0.0344 -0.11112,-0.0344 -0.11113,-0.0238 -0.11377,-0.0238 -0.11641,-0.0132 -0.11642,-0.0132 -0.11906,-0.008 -0.11907,-0.003 -0.11906,0.003 z"
+                    style="fill:#6d62c7;fill-opacity:1;stroke-width:0.26458332"></path>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </span>
+      Geoapify Geocoder Autocomplete Demos
+    </h1>
+    <p class="description">
+      Technical demos for developers showing how to implement Geoapify's address autocomplete — complete with code, best
+      practices, and integrations with major map libraries - MapLibre GL, Leaflet, OpenLayers.
+    </p>
+
+    <div class="samples-section">
+      <table class="sample-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Tags</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="sample-title">Address Collection: Search, Review & Confirm</span></td>
+            <td><span class="sample-desc">A smart address form that combines autocomplete, user review, and validation.<br />Users enter an address in a single search field with autocomplete suggestions. The form then expands into structured address fields for review and optional edits. After confirmation, the app verifies the address using the <a href="https://www.geoapify.com/geocoding-api/" target="_blank" rel="noopener">Geoapify Geocoding API</a>.</span></td>
+            <td>
+              <span class="tag">validation</span><span class="tag">verification</span><span class="tag">geocoding</span><span class="tag">address-input</span><span class="tag">address-confirmation</span>
+            </td>
+            <td><a class="sample-link" (click)="selectDemo('address-form-one-field')">Open</a></td>
+          </tr>
+          <tr>
+            <td><span class="sample-title">Autocomplete Features: Live Event Showcase</span></td>
+            <td><span class="sample-desc">An interactive demo visualizing all events triggered by the GeocoderAutocomplete component in real time.<br/>It logs user input, suggestion updates, request lifecycle events, place selection, and other key interactions directly in the console.<br/>Toggles let you enable or disable event groups to focus on specific behaviors.<br/>This demo helps developers understand the component's full event lifecycle and serves as a reference for debugging.</span></td>
+            <td>
+              <span class="tag">autocomplete</span><span class="tag">events</span><span class="tag">developer-demo</span>
+            </td>
+            <td><a class="sample-link" (click)="selectDemo('autocomplete-features-events')">Open</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer-note">
+      <p>
+        <strong>Need help?</strong> Check out our
+        <a href="https://www.npmjs.com/package/@geoapify/angular-geocoder-autocomplete" target="_blank">NPM package</a> and
+        <a href="https://github.com/geoapify/angular-geocoder-autocomplete" target="_blank">GitHub repository</a> for more
+        information.
+      </p>
+    </div>
+  </div>
 </div>
 
-<div class="demo-container">
-  <div class="demo-column">
-    <h3 style="margin-bottom: 20px;">Simple Address Form</h3>
-
-    <div class="address-collection-container">
-      <div class="address-row">
-        <div class="address-field-with-label main-part margin-right">
-          <label>Street:</label><br>
-          <div class="address-field autocomplete-container">
-            <geoapify-geocoder-autocomplete
-              [value]="streetValue"
-              [allowNonVerifiedHouseNumber]="true"
-              [allowNonVerifiedStreet]="true"
-              [skipIcons]="true"
-              [placeholder]="' '"
-              [skipSelectionOnArrowKey]="true"
-              (placeSelect)="onStreetSelected($event)"
-              (requestStart)="showSpinner('street')"
-              (requestEnd)="hideSpinner('street')">
-            </geoapify-geocoder-autocomplete>
-            <div class="loading-spinner" [style.display]="spinners.street ? 'block' : 'none'"></div>
-          </div>
-        </div>
-
-        <div class="address-field-with-label">
-          <label for="housenumber">House number:</label><br>
-          <input
-            id="housenumber"
-            class="geoapify-autocomplete-input small-input"
-            [(ngModel)]="formData.housenumber"
-            [class.warning-input]="showWarnings && !formData.housenumber"/>
-        </div>
-      </div>
-
-      <div class="address-row">
-        <div class="address-field-with-label main-part">
-          <label for="address-additional">Apartment, suite (optional):</label><br>
-          <input
-            id="address-additional"
-            class="geoapify-autocomplete-input"
-            [(ngModel)]="formData.additional"/>
-        </div>
-      </div>
-
-      <div class="address-row">
-        <div class="address-field-with-label main-part margin-right">
-          <label>City:</label><br>
-          <div class="address-field autocomplete-container">
-            <geoapify-geocoder-autocomplete
-              [value]="cityValue"
-              [type]="'city'"
-              [placeholder]="' '"
-              [skipIcons]="false"
-              (placeSelect)="onCitySelected($event)"
-              (requestStart)="showSpinner('city')"
-              (requestEnd)="hideSpinner('city')">
-            </geoapify-geocoder-autocomplete>
-            <div class="loading-spinner" [style.display]="spinners.city ? 'block' : 'none'"></div>
-          </div>
-        </div>
-
-        <div class="address-field-with-label">
-          <label for="postcode">ZIP code:</label><br>
-          <input
-            id="postcode"
-            class="geoapify-autocomplete-input small-input"
-            [(ngModel)]="formData.postcode"
-            [class.warning-input]="showWarnings && !formData.postcode"/>
-        </div>
-      </div>
-
-      <div class="address-row">
-        <div class="address-field-with-label main-part margin-right">
-          <label>State:</label><br>
-          <div class="address-field autocomplete-container">
-            <geoapify-geocoder-autocomplete
-              [value]="stateValue"
-              [type]="'state'"
-              [placeholder]="' '"
-              [skipIcons]="true"
-              (placeSelect)="onStateSelected($event)"
-              (requestStart)="showSpinner('state')"
-              (requestEnd)="hideSpinner('state')">
-            </geoapify-geocoder-autocomplete>
-            <div class="loading-spinner" [style.display]="spinners.state ? 'block' : 'none'"></div>
-          </div>
-        </div>
-
-        <div class="address-field-with-label main-part">
-          <label>Country:</label><br>
-          <div class="address-field autocomplete-container">
-            <geoapify-geocoder-autocomplete
-              [value]="countryValue"
-              [type]="'country'"
-              [placeholder]="' '"
-              [skipIcons]="false"
-              (placeSelect)="onCountrySelected($event)"
-              (requestStart)="showSpinner('country')"
-              (requestEnd)="hideSpinner('country')">
-            </geoapify-geocoder-autocomplete>
-            <div class="loading-spinner" [style.display]="spinners.country ? 'block' : 'none'"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="message-container">{{ message }}</div>
-      <div class="button-container">
-        <button (click)="checkAddress()">Check address</button>
-      </div>
-    </div>
+<!-- Demo Views with Router Outlet -->
+<div *ngIf="!isIndexPage" class="demo-view">
+  <div class="theme-selector">
+    <span class="theme-label">Theme:</span>
+    <select [(ngModel)]="selectedTheme" (change)="setTheme(selectedTheme)">
+      <option value="minimal">Light</option>
+      <option value="minimal-dark">Dark</option>
+      <option value="round-borders">Light (Round)</option>
+      <option value="round-borders-dark">Dark (Round)</option>
+    </select>
   </div>
 
-  <div class="demo-column">
-    <h3 style="margin-bottom: 20px;">Category & Places Search (v3.0.0)</h3>
-
-    <div class="address-collection-container">
-      <div class="address-row">
-        <div class="address-field-with-label main-part">
-          <label>Search places by category:</label><br>
-          <div class="address-field autocomplete-container">
-            <geoapify-geocoder-autocomplete
-              #categoryAutocomplete
-              [value]="categorySearchValue"
-              [addCategorySearch]="true"
-              [showPlacesList]="true"
-              [enablePlacesLazyLoading]="true"
-              [placesLimit]="5"
-              [hidePlacesListAfterSelect]="false"
-              [placeholder]="'Enter place name or select category...'"
-              (placeSelect)="onCategoryPlaceSelected($event)"
-              (places)="onPlacesReceived($event)"
-              (placeSelectEvent)="onSpecificPlaceSelected($event)"
-              (clear)="onCategoryCleared($event)"
-              (placesRequestStart)="showSpinner('category')"
-              (placesRequestEnd)="hideSpinner('category')"
-              (placeDetailsRequestStart)="showSpinner('category')"
-              (placeDetailsRequestEnd)="hideSpinner('category')"
-              (requestStart)="showSpinner('category')"
-              (requestEnd)="hideSpinner('category')">
-            </geoapify-geocoder-autocomplete>
-            <div class="loading-spinner" [style.display]="spinners.category ? 'block' : 'none'"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="button-container" style="text-align: left; margin-top: 10px;">
-        <button (click)="selectRestaurantCategory()" style="margin-right: 5px; font-size: 12px;">Restaurants</button>
-        <button (click)="selectHotelCategory()" style="margin-right: 5px; font-size: 12px;">Hotels</button>
-        <button (click)="selectShoppingCategory()" style="margin-right: 5px; font-size: 12px;">Shopping</button>
-        <button (click)="clearCategory()" style="font-size: 12px;">Clear</button>
-      </div>
-
-      <div class="message-container" *ngIf="currentCategory">
-        Active category: <strong>{{ currentCategory.label }}</strong>
-      </div>
-
-      <div class="message-container" *ngIf="selectedPlace" style="margin-top: 15px; padding: 10px; background: #f9f9f9; border-left: 3px solid #007bff;">
-        <strong>{{ selectedPlace.properties?.name || 'Selected Place' }}</strong><br>
-        <small>{{ selectedPlace.properties?.formatted || 'No address available' }}</small>
-      </div>
-    </div>
-  </div>
+  <router-outlet></router-outlet>
 </div>

@@ -1,0 +1,134 @@
+<div class="address-collection-container">
+  <div class="sample-header">
+    <h1>Address Form — Search, Check, Confirm</h1>
+    <p class="helper-text">Search for your address to prefill the form. Review and correct if needed, then confirm the address. Autocomplete assists — you verify the final details.</p>
+  </div>
+  
+  <div class="section-block" aria-labelledby="sec1-title">
+    <div class="section-title">
+      <span class="section-num" aria-hidden="true">1</span>
+      <span id="sec1-title" class="section-heading">Search address</span>
+    </div>
+    <div class="address-row">
+      <div class="address-field-with-label main-part">
+        <label for="address-search" class="sr-only">Search for your address</label>
+        <div class="address-field autocomplete-container">
+          <geoapify-geocoder-autocomplete
+            #addressSearch
+            [allowNonVerifiedHouseNumber]="true"
+            [allowNonVerifiedStreet]="true"
+            [skipIcons]="true"
+            [placeholder]="' '"
+            [skipSelectionOnArrowKey]="true"
+            (placeSelect)="onAddressSelected($event)">
+          </geoapify-geocoder-autocomplete>
+        </div>
+        <div class="helper-text">Use search to start. We'll prefill; you review and complete. Can't find your exact address? <a href="#" (click)="focusFirstMissing($event)">Enter it manually</a>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block" aria-labelledby="sec2-title">
+    <div class="section-title">
+      <span class="section-num" aria-hidden="true">2</span>
+      <span id="sec2-title" class="section-heading">Check and edit if needed</span>
+    </div>
+    <div class="address-row">
+      <div class="address-field-with-label main-part margin-right">
+        <label for="street">Street</label><br>
+        <input 
+          #streetInput
+          id="street" 
+          class="geoapify-autocomplete-input" 
+          [(ngModel)]="formData.street"
+          (input)="updateConfirmState()"
+          [class.highlight-on-select]="highlightFields.street"
+          [class.warning-input]="showWarnings && !formData.street"
+        />
+      </div>
+      <div class="address-field-with-label">
+        <label for="housenumber">House number</label><br>
+        <input 
+          #houseInput
+          id="housenumber" 
+          class="geoapify-autocomplete-input small-input" 
+          [(ngModel)]="formData.housenumber"
+          (input)="updateConfirmState()"
+          [class.highlight-on-select]="highlightFields.housenumber"
+          [class.warning-input]="showWarnings && !formData.housenumber"
+        />
+      </div>
+    </div>
+
+    <div class="address-row">
+      <div class="address-field-with-label main-part margin-right">
+        <label for="city">City</label><br>
+        <input 
+          #cityInput
+          id="city" 
+          class="geoapify-autocomplete-input" 
+          [(ngModel)]="formData.city"
+          (input)="updateConfirmState()"
+          [class.highlight-on-select]="highlightFields.city"
+          [class.warning-input]="showWarnings && !formData.city"
+        />
+      </div>
+      <div class="address-field-with-label">
+        <label for="postcode">Postcode</label><br>
+        <input 
+          #postcodeInput
+          id="postcode" 
+          class="geoapify-autocomplete-input small-input" 
+          [(ngModel)]="formData.postcode"
+          (input)="updateConfirmState()"
+          [class.highlight-on-select]="highlightFields.postcode"
+          [class.warning-input]="showWarnings && !formData.postcode"
+        />
+      </div>
+    </div>
+
+    <div class="address-row">
+      <div class="address-field-with-label main-part">
+        <label for="country">Country</label><br>
+        <input 
+          #countryInput
+          id="country" 
+          class="geoapify-autocomplete-input" 
+          [(ngModel)]="formData.country"
+          (input)="updateConfirmState()"
+          [class.highlight-on-select]="highlightFields.country"
+          [class.warning-input]="showWarnings && !formData.country"
+        />
+      </div>
+    </div>
+
+    <div class="message-container" aria-live="polite">{{ message }}</div>
+    <div class="match-badge" [hidden]="!matchBadge.visible" [ngClass]="matchBadge.class" aria-live="polite">
+      {{ matchBadge.text }}
+    </div>
+  </div>
+
+  <div class="section-block" aria-labelledby="sec3-title">
+    <div class="section-title">
+      <span class="section-num" aria-hidden="true">3</span>
+      <span id="sec3-title" class="section-heading">Confirm</span>
+    </div>
+    <div class="button-container">
+      <button 
+        id="submit-btn" 
+        (click)="confirmAddress()" 
+        [disabled]="!canConfirm"
+        [attr.aria-disabled]="!canConfirm">
+        Confirm address
+      </button>
+    </div>
+    <div class="button-hint">Autocomplete suggests. You confirm.</div>
+    
+    <div class="dev-info-panel" [hidden]="!devPanel.visible">
+      <div class="dev-info-title">Developer info (internal)</div>
+      <div class="dev-kv" [innerHTML]="devPanel.status"></div>
+      <div class="dev-kv" [innerHTML]="devPanel.meta"></div>
+      <pre class="dev-code">{{ devPanel.code }}</pre>
+    </div>
+  </div>
+</div>

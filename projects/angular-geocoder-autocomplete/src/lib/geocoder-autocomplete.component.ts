@@ -169,7 +169,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   requestEnd: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
-  places: EventEmitter<GeoJSON.Feature[]> = new EventEmitter<GeoJSON.Feature[]>();
+  places: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   @Output()
   placesRequestStart: EventEmitter<Category> = new EventEmitter<Category>();
@@ -179,15 +179,15 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     new EventEmitter<{success: boolean, data?: any, error?: any}>();
 
   @Output()
-  placeDetailsRequestStart: EventEmitter<GeoJSON.Feature> = new EventEmitter<GeoJSON.Feature>();
+  placeDetailsRequestStart: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
   placeDetailsRequestEnd: EventEmitter<{success: boolean, data?: any, error?: any}> =
     new EventEmitter<{success: boolean, data?: any, error?: any}>();
 
   @Output()
-  placeSelectEvent: EventEmitter<{place: GeoJSON.Feature, index: number}> =
-    new EventEmitter<{place: GeoJSON.Feature, index: number}>();
+  placeSelectEvent: EventEmitter<{place: any, index: number}> =
+    new EventEmitter<{place: any, index: number}>();
 
   @Output()
   clear: EventEmitter<ItemType> = new EventEmitter<ItemType>();
@@ -384,7 +384,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     this.requestEnd.emit(value);
   }
 
-  onPlaces(places: GeoJSON.Feature[]) {
+  onPlaces(places: any[]) {
     this.places.emit(places);
   }
 
@@ -396,7 +396,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     this.placesRequestEnd.emit(value);
   }
 
-  onPlaceDetailsRequestStart(value: GeoJSON.Feature) {
+  onPlaceDetailsRequestStart(value: any) {
     this.placeDetailsRequestStart.emit(value);
   }
 
@@ -404,7 +404,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     this.placeDetailsRequestEnd.emit(value);
   }
 
-  onPlaceSelectEvent(value: {place: GeoJSON.Feature, index: number}) {
+  onPlaceSelectEvent(value: {place: any, index: number}) {
     this.placeSelectEvent.emit(value);
   }
 
