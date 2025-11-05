@@ -16,7 +16,7 @@ import {
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    GeoapifyGeocoderAutocompleteModule.withConfig('93b8e26606dd485183dcdab30f239f81')
+    GeoapifyGeocoderAutocompleteModule.withConfig('YOUR_API_KEY')
   ],
   providers: [],
   bootstrap: [AppComponent]
