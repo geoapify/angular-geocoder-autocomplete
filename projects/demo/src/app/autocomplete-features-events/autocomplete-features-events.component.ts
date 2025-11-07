@@ -48,7 +48,7 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
 
   optionsForm: OptionsForm = {
     debounceDelay: 250,
-    addDetails: false,
+    addDetails: true,
     addCategorySearch: true
   };
 
@@ -67,28 +67,28 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
 
   // Event handlers
   onInput(text: any) {
-    this.logEvent('input', this.fmt({ text }));
+    this.logEvent('input', this.format({ text }));
   }
 
   onRequestStart(query: any) {
-    this.logEvent('request_start', this.fmt({ query }));
+    this.logEvent('request_start', this.format({ query }));
   }
 
   onRequestEnd(result: any) {
     const success = result?.success !== false;
     const count = this.getResultCount(result?.data || result);
     const error = result?.error && !result.error.canceled ? String(result.error) : undefined;
-    this.logEvent('request_end', this.fmt({ success, suggestions: count, error }));
+    this.logEvent('request_end', this.format({ success, suggestions: count, error }));
   }
 
   onSuggestions(items: any) {
     const count = Array.isArray(items) ? items.length : 0;
-    this.logEvent('suggestions', this.fmt({ count }));
+    this.logEvent('suggestions', this.format({ count }));
   }
 
   onSelect(feature: any) {
     const p = feature?.properties || {};
-    this.logEvent('select', this.fmt({ formatted: p.formatted, lat: p.lat, lon: p.lon }));
+    this.logEvent('select', this.format({ formatted: p.formatted, lat: p.lat, lon: p.lon }));
   }
 
   onOpen(event: any) {
@@ -100,12 +100,12 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
   }
 
   onClear(context: any) {
-    this.logEvent('clear', this.fmt({ context }));
+    this.logEvent('clear', this.format({ context }));
   }
 
   onPlaceDetailsRequestStart(feature: any) {
     const p = feature?.properties || {};
-    this.logEvent('place_details_request_start', this.fmt({ name: p.name || p.formatted }));
+    this.logEvent('place_details_request_start', this.format({ name: p.name || p.formatted }));
   }
 
   onPlaceDetailsRequestEnd(result: any) {
@@ -113,38 +113,38 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
     const p = feature?.properties || {};
     const success = result?.success !== false;
     const error = result?.error && !result.error.canceled ? String(result.error) : undefined;
-    this.logEvent('place_details_request_end', this.fmt({ 
-      success, 
-      name: p.name || p.formatted, 
-      error 
+    this.logEvent('place_details_request_end', this.format({
+      success,
+      name: p.name || p.formatted,
+      error
     }));
   }
 
   onPlacesRequestStart(categoryKeys: any) {
-    this.logEvent('places_request_start', this.fmt({ categories: categoryKeys }));
+    this.logEvent('places_request_start', this.format({ categories: categoryKeys }));
   }
 
   onPlacesRequestEnd(result: any) {
     const success = result?.success !== false;
     const count = this.getResultCount(result?.data || result);
     const error = result?.error && !result.error.canceled ? String(result.error) : undefined;
-    this.logEvent('places_request_end', this.fmt({ success, places: count, error }));
+    this.logEvent('places_request_end', this.format({ success, places: count, error }));
   }
 
   onPlaces(places: any) {
     const count = Array.isArray(places) ? places.length : 0;
-    this.logEvent('places', this.fmt({ count }));
+    this.logEvent('places', this.format({ count }));
   }
 
   onPlaceSelectEvent(event: any) {
     const place = event?.place;
     const index = event?.index;
     const p = place?.properties || {};
-    this.logEvent('place_select', this.fmt({ 
-      index, 
-      name: p.name || p.formatted, 
-      lat: p.lat, 
-      lon: p.lon 
+    this.logEvent('place_select', this.format({
+      index,
+      name: p.name || p.formatted,
+      lat: p.lat,
+      lon: p.lon
     }));
   }
 
@@ -155,12 +155,12 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
     return 0;
   }
 
-  private fmt(obj: any): string {
+  private format(obj: any): string {
     try {
       const text = typeof obj === 'string' ? obj : JSON.stringify(obj, null, 2);
       return text.length > 800 ? text.slice(0, 800) + '…' : text;
-    } catch(_) { 
-      return String(obj); 
+    } catch(e) {
+      return String(obj);
     }
   }
 
@@ -172,7 +172,7 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
     }
 
     const timestamp = this.nowTimestamp();
-    
+
     this.consoleLogs.push({
       timestamp,
       event: eventName,
@@ -219,17 +219,5 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
 
   clearLog() {
     this.consoleLogs = [];
-  }
-
-  applyOptions() {
-    // Update the current options
-    this.options = { ...this.optionsForm };
-    
-    // Log the options change
-    this.logEvent('options_applied', JSON.stringify({
-      debounceDelay: this.options.debounceDelay,
-      addDetails: this.options.addDetails,
-      addCategorySearch: this.options.addCategorySearch
-    }));
   }
 }

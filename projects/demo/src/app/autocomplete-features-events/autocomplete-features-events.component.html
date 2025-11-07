@@ -36,38 +36,7 @@
   </div>
 
   <div class="panel">
-    <h3>2. Options</h3>
-    <div class="hint">Options overview:</div>
-    <ul class="hint" style="margin:6px 0 10px 18px;">
-      <li><code>debounceDelay?: number</code> — controls how long to wait after typing before sending a request.</li>
-      <li><code>addDetails?: boolean</code> — calls the Place Details API to fetch place geometry and extra attributes.</li>
-      <li><code>addCategorySearch?: boolean</code> — enables searching places by categories (e.g., restaurants, parks).</li>
-    </ul>
-    <div class="row" style="margin-top:8px; gap:18px; align-items:center;">
-      <label>debounceDelay (ms)
-        <input
-          [(ngModel)]="optionsForm.debounceDelay"
-          type="number"
-          min="0"
-          step="50"
-          style="width:120px;">
-      </label>
-      <label>
-        <input
-          [(ngModel)]="optionsForm.addDetails"
-          type="checkbox"> addDetails
-      </label>
-      <label>
-        <input
-          [(ngModel)]="optionsForm.addCategorySearch"
-          type="checkbox"> addCategorySearch
-      </label>
-      <button (click)="applyOptions()">Apply Options</button>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h3>3. Events</h3>
+    <h3>2. Events</h3>
     <div class="event-grid">
       <label *ngFor="let event of events" style="display:flex; gap:8px; align-items:center;">
         <input
