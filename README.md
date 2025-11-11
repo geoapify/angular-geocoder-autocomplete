@@ -25,7 +25,12 @@ yarn add @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
 | 2.0.0                                   | 15.x           |
 | 2.0.1                                   | 15.x-16.x      |
 | 2.0.2                                   | 17.x-18.x      |
+<<<<<<< HEAD
 | 2.2.0 - 2.2.1                           | 19.x-20.x      |
+=======
+| 2.2.0                                   | 19.x-20.x      |
+| 3.0.0                                   | 19.x-20.x      |
+>>>>>>> origin/GD-129
 
 **Note:** If you want to get rid of the Angular version dependency or integrate the `geocoder-autocomplete` without the wrapper, you can follow the instructions provided in [the documentation for standalone usage](#standalone-usage).
 
@@ -127,12 +132,28 @@ For further details on available styles, CSS classes and customization options, 
     [biasByProximity]="biasByProximity"
     [skipIcons]="true"
     [addDetails]="true"
+    [allowNonVerifiedHouseNumber]="true"
+    [allowNonVerifiedStreet]="true"
+    [skipSelectionOnArrowKey]="false"
+    [addCategorySearch]="options.addCategorySearch"
+    [showPlacesList]="options.showPlacesList"
+    [hidePlacesListAfterSelect]="options.hidePlacesListAfterSelect"
+    [enablePlacesLazyLoading]="options.enablePlacesLazyLoading"
+    [placesLimit]="options.placesLimit"
+    [placesFilter]="options.placesFilter"
+    [placesBias]="options.placesBias"
     [preprocessingHook]="preprocessingHook"
     [postprocessingHook]="postprocessingHook"
     [suggestionsFilter]="suggestionsFilter"
     (placeSelect)="placeSelected($event)" 
     (suggestionsChange)="suggestionsChanged($event)"
-    (userInput)="userInput($event)">
+    (userInput)="userInput($event)"
+    (requestStart)="requestStarted($event)"
+    (requestEnd)="requestEnded($event)"
+    (places)="placesChanged($event)"
+    (placeSelectEvent)="placeSelectedFromList($event)"
+    (placesRequestStart)="placesRequestStarted($event)"
+    (placesRequestEnd)="placesRequestEnded($event)">
 </geoapify-geocoder-autocomplete>
 ```
 
@@ -157,6 +178,16 @@ Here is the comprehensive list of input and output properties. Learn how to conf
 | `biasByProximity: GeocoderAutocomplete.ByProximityOptions` | Bias suggestions by proximity to a location.                                                       |
 | `limit: number`                 | The maximum number of suggestions to display.                                                             |
 | `debounceDelay: number`         | The debounce delay for input changes in milliseconds.                                                      |
+| `allowNonVerifiedHouseNumber: boolean` | Allows input of house numbers that may not be verified in the geocoding database.                          |
+| `allowNonVerifiedStreet: boolean` | Allows input of street names that may not be verified in the geocoding database.                           |
+| `skipSelectionOnArrowKey: boolean` | When true, prevents automatic selection when navigating suggestions with arrow keys.                        |
+| `addCategorySearch: boolean`    | Enables category-based place searches using the Geoapify Places API for POIs like restaurants, hotels, etc. |
+| `showPlacesList: boolean`       | Controls whether to display a built-in places list under the autocomplete field when category search is enabled. |
+| `hidePlacesListAfterSelect: boolean` | When true, hides the places list after a place is selected.                                                |
+| `enablePlacesLazyLoading: boolean` | Enables lazy loading for places results to load more items as needed.                                       |
+| `placesLimit: number`           | The maximum number of places to display in the places list.                                                |
+| `placesFilter: object`          | Filters for places search (e.g., by circle, rectangle, or categories).                                     |
+| `placesBias: object`           | Bias settings for places search to prioritize certain areas or criteria.                                   |
 | *preprocessingHook: (value: string) => string* | A function to preprocess the input value before sending requests.                               |
 | *postprocessingHook: (feature: [GeoJSON.Feature](https://en.wikipedia.org/wiki/GeoJSON)) => string* | A function to process and modify the selected place feature before display.                  |
 | *suggestionsFilter: (suggestions: [GeoJSON.Feature](https://en.wikipedia.org/wiki/GeoJSON)[]) => [GeoJSON.Feature](https://en.wikipedia.org/wiki/GeoJSON)[]* | A function to filter and modify the suggestions list before display.                           |
@@ -173,6 +204,15 @@ Here are the component outputs:
 | `userInput: EventEmitter<string>`         | Emits the user's input as a string when they interact with the input field.                   |
 | `open: EventEmitter<boolean>`             | Emits a boolean value indicating when the suggestions dropdown opens.                             |
 | `close: EventEmitter<boolean>`            | Emits a boolean value indicating when the suggestions dropdown closes.                             |
+| `requestStart: EventEmitter<any>`         | Emits an event when a geocoding request begins (after debounce delay).                            |
+| `requestEnd: EventEmitter<any>`           | Emits an event when a geocoding request completes (success or failure).                           |
+| `places: EventEmitter<any[]>`             | Emits places results when category search returns POIs.                                           |
+| `placesRequestStart: EventEmitter<Category>` | Emits when a places API request begins for category search.                                    |
+| `placesRequestEnd: EventEmitter<{success: boolean, data?: any, error?: any}>`  | Emits when a places API request completes (includes success status and data/error).               |
+| `placeDetailsRequestStart: EventEmitter<any>` | Emits when a place details API request begins.                                               |
+| `placeDetailsRequestEnd: EventEmitter<{success: boolean, data?: any, error?: any}>` | Emits when a place details API request completes (includes success status and data/error).      |
+| `placeSelectEvent: EventEmitter<{place: any, index: number}>`  | Emits when a place is selected from the places list (includes place and index).                   |
+| `clear: EventEmitter<ItemType>`                | Emits when the input field or category selection is cleared.                                      |
 
 The component itself doesn't have a dependency on [@types/geojson](https://www.npmjs.com/package/@types/geojson). However, if you wish to work with GeoJSON types in your application, you can install it as an additional package.
 
@@ -434,6 +474,69 @@ Don't forget to add the necessary CSS styles to your Angular project. You can in
 ```
 
 With these steps, you've successfully integrated the `geocoder-autocomplete` control directly into your Angular project, giving you full control over its functionality and appearance.
+
+## Category Search and Places (New in V3)
+
+Version 3.0's major new feature enables **category-based place searches** using the [Geoapify Places API](https://www.geoapify.com/places-api/). This allows users to find **points of interest (POIs)** such as restaurants, cafes, hotels, gas stations, and more — in addition to standard address autocomplete.
+
+### When It's Useful
+
+Category search is ideal for:
+
+* Building "Find nearby" or "Explore around me" features
+* Showing local amenities or businesses on a map
+* Adding category-based discovery to your forms or applications
+* Enhancing location-based search experiences with dynamic data
+
+### Basic Category Search Setup
+
+To enable category-based search, set the `addCategorySearch` option:
+
+```html
+<geoapify-geocoder-autocomplete 
+    [addCategorySearch]="true"
+    (places)="onPlacesChanged($event)"
+    (placeSelectEvent)="onPlaceSelected($event)">
+</geoapify-geocoder-autocomplete>
+```
+
+### Built-in Places List
+
+Enable the built-in places list to automatically display matching POIs below the input field:
+
+```html
+<geoapify-geocoder-autocomplete 
+    [addCategorySearch]="true"
+    [showPlacesList]="true"
+    [enablePlacesLazyLoading]="true"
+    [placesLimit]="10"
+    [hidePlacesListAfterSelect]="false"
+    (placesRequestStart)="onPlacesRequestStart($event)"
+    (placesRequestEnd)="onPlacesRequestEnd($event)">
+</geoapify-geocoder-autocomplete>
+```
+
+### Complete Category Search Example
+
+Here's a comprehensive example showing all category search features:
+
+```html
+<geoapify-geocoder-autocomplete 
+    [addCategorySearch]="true"
+    [showPlacesList]="true"
+    [enablePlacesLazyLoading]="true"
+    [placesLimit]="15"
+    [hidePlacesListAfterSelect]="true"
+    (places)="handlePlaces($event)"
+    (placeSelectEvent)="handlePlaceSelection($event)"
+    (placesRequestStart)="showPlacesLoading($event)"
+    (placesRequestEnd)="hidePlacesLoading($event)"
+    (placeDetailsRequestStart)="showDetailsLoading($event)"
+    (placeDetailsRequestEnd)="hideDetailsLoading($event)">
+</geoapify-geocoder-autocomplete>
+```
+
+When users type a category name (e.g., *restaurant*, *gas station*, *hotel*), the autocomplete shows category suggestions alongside address results. If `showPlacesList` is enabled, matching places are automatically displayed below the input field with details like name, address, and opening hours.
 
 ## Geoapify Geocoding API documentation
 * [Geocoding API Documentation](https://apidocs.geoapify.com/docs/geocoding)

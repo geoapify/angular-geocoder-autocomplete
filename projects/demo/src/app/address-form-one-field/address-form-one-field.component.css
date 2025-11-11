@@ -1,0 +1,286 @@
+/* Container and layout */
+.address-collection-container {
+  max-width: 880px;
+  margin: 48px auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.address-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.address-field-with-label {
+  flex: 1;
+}
+
+.main-part {
+  flex: 2;
+}
+
+.margin-right {
+  margin-right: 16px;
+}
+
+.autocomplete-container {
+  position: relative;
+}
+
+.message-container {
+  margin: 12px 0 8px 0;
+  color: #6b7a90;
+  font-size: 14px;
+}
+
+.small-input {
+  width: 110px;
+  flex-shrink: 0;
+}
+
+.helper-text {
+  margin: 6px 0 16px 0;
+  color: #6b7a90;
+  font-size: 13px;
+}
+
+.button-container {
+  margin-top: 10px;
+  text-align: right;
+}
+
+/* Visual highlight for editable fields after autofill */
+.highlight-on-select {
+  animation: fieldPulse 1.8s ease;
+}
+
+@keyframes fieldPulse {
+  0% { box-shadow: 0 0 0 0 rgba(46,162,255,0.45); }
+  50% { box-shadow: 0 0 0 6px rgba(46,162,255,0.18); }
+  100% { box-shadow: 0 0 0 0 rgba(46,162,255,0); }
+}
+
+.warning-input {
+  border-color: #ffb610 !important;
+  box-shadow: 0 0 0 2px rgba(255, 182, 16, 0.2) !important;
+}
+
+.geoapify-autocomplete-input {
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* Ensure proper spacing for autocomplete containers */
+.address-field {
+  min-height: 36px;
+}
+
+/* Match-level badge */
+.match-badge {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1;
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  margin: 6px 0 0 0;
+}
+
+.match-badge.is-building { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+.match-badge.is-street   { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+.match-badge.is-city     { background: #f1f5f9; color: #334155; border-color: #e2e8f0; }
+.match-badge.is-ambiguous{ background: #fff7ed; color: #7c2d12; border-color: #fed7aa; }
+.match-badge.is-error    { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+
+/* Button helper */
+.button-hint { 
+  font-size: 12px; 
+  color: #6b7a90; 
+  margin-top: 8px; 
+  text-align: right; 
+}
+
+/* Disabled button state */
+button[disabled] { 
+  opacity: 0.6; 
+  cursor: not-allowed; 
+}
+
+/* Developer info panel */
+.dev-info-panel[hidden] { 
+  display: none; 
+}
+
+.dev-info-panel {
+  margin-top: 12px;
+  border: 1px dashed #c7d7ea;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #f7fbff;
+}
+
+.dev-info-title { 
+  font-weight: 600; 
+  font-size: 13px; 
+  color: #264a66; 
+  margin-bottom: 8px; 
+}
+
+.dev-kv { 
+  font-size: 12px; 
+  color: #35546a; 
+  line-height: 1.5; 
+}
+
+.dev-kv strong { 
+  color: #1f2f3a; 
+}
+
+.dev-code {
+  margin-top: 8px;
+  padding: 8px;
+  background: #0b1526;
+  color: #d7e3ef;
+  border-radius: 6px;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  max-height: 240px;
+}
+
+/* A11y utility: screen-reader only */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Sectioned flow (1. Search, 2. Check, 3. Confirm) */
+.section-block {
+  border: 1px solid #e6ecf5;
+  border-radius: 12px;
+  padding: 14px 16px 12px;
+  margin: 18px 0;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(16,24,40,.03);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 12px 0;
+}
+
+.section-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  color: #fff;
+  background: #2ea2ff;
+  box-shadow: 0 2px 8px rgba(46,162,255,.25);
+}
+
+.section-heading {
+  font-weight: 600;
+  color: #0b1526;
+}
+
+.sample-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0b1526;
+  margin: 0 0 16px 0;
+}
+
+.sample-header .helper-text {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
+
+/* Dark theme support */
+:host-context(body.theme-minimal-dark),
+:host-context(body.theme-round-borders-dark) {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+:host-context(body.theme-minimal-dark) .section-block,
+:host-context(body.theme-round-borders-dark) .section-block {
+  background: #242424;
+  border-color: #3a3a3a;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+}
+
+:host-context(body.theme-minimal-dark) .section-heading,
+:host-context(body.theme-round-borders-dark) .section-heading {
+  color: #e0e0e0;
+}
+
+:host-context(body.theme-minimal-dark) .sample-header h1,
+:host-context(body.theme-round-borders-dark) .sample-header h1 {
+  color: #e0e0e0;
+}
+
+:host-context(body.theme-minimal-dark) .helper-text,
+:host-context(body.theme-round-borders-dark) .helper-text {
+  color: #bbb;
+}
+
+:host-context(body.theme-minimal-dark) .message-container,
+:host-context(body.theme-round-borders-dark) .message-container {
+  color: #bbb;
+}
+
+:host-context(body.theme-minimal-dark) .dev-info-panel,
+:host-context(body.theme-round-borders-dark) .dev-info-panel {
+  background: #1e2633;
+  border-color: #334155;
+}
+
+:host-context(body.theme-minimal-dark) .dev-info-title,
+:host-context(body.theme-round-borders-dark) .dev-info-title {
+  color: #9ec5ff;
+}
+
+:host-context(body.theme-minimal-dark) .dev-kv,
+:host-context(body.theme-round-borders-dark) .dev-kv {
+  color: #bbb;
+}
+
+:host-context(body.theme-minimal-dark) .dev-kv strong,
+:host-context(body.theme-round-borders-dark) .dev-kv strong {
+  color: #e0e0e0;
+}
+
+:host-context(body.theme-minimal-dark) button,
+:host-context(body.theme-round-borders-dark) button {
+  background-color: #444;
+  color: #e0e0e0;
+  border: 1px solid #666;
+}
+
+:host-context(body.theme-minimal-dark) button:hover,
+:host-context(body.theme-round-borders-dark) button:hover {
+  background-color: #555;
+}
+
+:host-context(body.theme-minimal-dark) button:disabled,
+:host-context(body.theme-round-borders-dark) button:disabled {
+  background-color: #333;
+  color: #666;
+  border-color: #555;
+}

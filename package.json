@@ -19,10 +19,11 @@
     "@angular/platform-browser": "^20.1.6",
     "@angular/platform-browser-dynamic": "^20.1.6",
     "@angular/router": "^20.1.6",
-    "@geoapify/geocoder-autocomplete": "^2.2.0",
+    "@geoapify/geocoder-autocomplete": "3.0.0",
     "rxjs": "^7.8.2",
     "tslib": "^2.8.1",
-    "zone.js": "^0.15.1"
+    "zone.js": "^0.15.1",
+    "@types/geojson": "^7946.0.16"
   },
   "devDependencies": {
     "@angular/build": "^20.1.5",
