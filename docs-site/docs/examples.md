@@ -1,197 +1,259 @@
 # Examples
 
-This section provides practical examples of how to use the Angular Geocoder Autocomplete component with various configuration options and event handlers.
+This section shows practical examples of using the `<geoapify-geocoder-autocomplete>` component in different configurations.
+Each snippet demonstrates how to combine inputs and outputs to create flexible address search fields for your Angular app.
 
-## Using Filters and Bias
+## Simple Address Input Field
 
-Here are a few examples of how to set filters and bias using the `@geoapify/angular-geocoder-autocomplete` Angular component:
-
-### 1. Filter by Country Code:
-```html
-<geoapify-geocoder-autocomplete [filterByCountryCode]="['US', 'CA']"></geoapify-geocoder-autocomplete>
-```
-
-### 2. Filter by Circular Area:
-```html
-<geoapify-geocoder-autocomplete [filterByCircle]="{ lon: -73.935242, lat: 40.730610, radiusMeters: 10000 }"></geoapify-geocoder-autocomplete>
-```
-
-### 3. Filter by Rectangular Area:
-```html
-<geoapify-geocoder-autocomplete [filterByRect]="{ lon1: -74.259089, lat1: 40.477398, lon2: -73.700272, lat2: 40.917577 }"></geoapify-geocoder-autocomplete>
-```
-
-### 4. Bias by Country:
-```html
-<geoapify-geocoder-autocomplete [biasByCountryCode]="['US']"></geoapify-geocoder-autocomplete>
-```
-
-### 5. Bias by Proximity:
-```html
-<geoapify-geocoder-autocomplete [biasByProximity]="{ lon: -73.935242, lat: 40.730610 }"></geoapify-geocoder-autocomplete>
-```
-
-These examples demonstrate how to configure filters and bias to refine the autocomplete results according to your specific requirements. 
-
-* You can apply multiple filters simultaneously, and the library applies *AND* logic to these filters.
-* Similarly, you can utilize multiple bias parameters concurrently, with the library employing *OR* logic for these biases.
-
-## Using Hooks
-
-Here are examples of how to use hooks with the `@geoapify/angular-geocoder-autocomplete` Angular component:
+A minimal setup that displays an address input and listens for place selection events.
 
 ```html
-<geoapify-geocoder-autocomplete 
-    [preprocessingHook]="preprocessingHook"
-    [postprocessingHook]="postprocessingHook"
-    [suggestionsFilter]="suggestionsFilter"
-    ...>
+<geoapify-geocoder-autocomplete
+  placeholder="Search for an address"
+  (placeSelect)="onPlaceSelected($event)">
 </geoapify-geocoder-autocomplete>
 ```
-
-```javascript
-preprocessingHook(value: string) {
-  return `${value}, ${this.postcode} ${this.city}`
-}
-
-postprocessingHook(feature: any) {
-  return feature.properties.street;
-}
-
-suggestionsFilter(suggestions: any[]) {
-  const processedStreets = [];
-
-  const filtered = suggestions.filter(value => {
-    if (!value.properties.street || processedStreets.indexOf(value.properties.street) >= 0) {
-      return false;
-    } else {
-      processedStreets.push(value.properties.street);
-      return true;
-    }
-  })
-
-  return filtered;
-}
-```
-
-## Using Events
-
-Here are examples of how to use the outputs provided by the `@geoapify/angular-geocoder-autocomplete` Angular component:
-
-### 1. Handling Place Selection
-
-You can listen to the `placeSelect` event to capture the selected place when a user selects an address from the autocomplete suggestions:
-
-```html
-<geoapify-geocoder-autocomplete (placeSelect)="onPlaceSelected($event)"></geoapify-geocoder-autocomplete>
-```
-
-In your component:
 
 ```typescript
-onPlaceSelected(place: any): void {
-  // Handle the selected place, which is a GeoJSON feature
-  console.log('Selected Place:', place);
+onPlaceSelected(place: any) {
+  console.log('Selected place:', place.properties.formatted);
 }
 ```
+**Used properties:**
 
-### 2. Reacting to Suggestions Change
+* `placeholder` – displays hint text inside the input field.
+* `placeSelect` – event emitted when a user selects a place from the suggestions.
 
-The `suggestionsChange` event allows you to react whenever the suggestions list changes, such as when a user types or modifies their input:
+
+## Search for Cities in a country
+
+This setup limits suggestions to US cities and requests additional place details, such as boundaries when available.
 
 ```html
-<geoapify-geocoder-autocomplete (suggestionsChange)="onSuggestionsChange($event)"></geoapify-geocoder-autocomplete>
+<geoapify-geocoder-autocomplete
+  [type]="'city'"
+  [filterByCountryCode]="['us']"
+  [addDetails]="true"
+  placeholder="Search for a city in the US"
+  (placeSelect)="onCitySelected($event)">
+</geoapify-geocoder-autocomplete>
 ```
-
-In your component:
 
 ```typescript
-onSuggestionsChange(suggestions: GeoJSON.Feature[]): void {
-  // Handle the updated suggestions list
-  console.log('Suggestions:', suggestions);
+onCitySelected(place: any) {
+  console.log('City:', place.properties.city);
+  console.log('Boundary:', place.properties.bounds);
 }
 ```
 
-### 3. Capturing User Input
+**Used properties:**
 
-You can use the `userInput` event to capture user input as they type or interact with the autocomplete input:
+* `type="city"` – restricts suggestions to cities only.
+* `filterByCountryCode="['us']"` – limits results to the United States.
+* `addDetails="true"` – requests extended details, including geometry data like city boundaries.
+* `placeSelect` – event triggered when a city is selected.
+
+
+## Bias Results Using User Location
+
+This example uses the browser’s geolocation API to detect the user’s position and bias autocomplete suggestions toward nearby results.
 
 ```html
-<geoapify-geocoder-autocomplete (userInput)="onUserInput($event)"></geoapify-geocoder-autocomplete>
+<geoapify-geocoder-autocomplete
+  placeholder="Search nearby places"
+  [biasByProximity]="userLocation"
+  (placeSelect)="onPlaceSelected($event)">
+</geoapify-geocoder-autocomplete>
 ```
-
-In your component:
 
 ```typescript
-onUserInput(input: string): void {
-  // Capture and react to user input
-  console.log('User Input:', input);
+userLocation: { lon: number; lat: number } | null = null;
+
+ngOnInit() {
+  navigator.geolocation.getCurrentPosition((pos) => {
+    this.userLocation = {
+      lon: pos.coords.longitude,
+      lat: pos.coords.latitude
+    };
+  });
+}
+
+onPlaceSelected(place: any) {
+  console.log('Selected place:', place.properties.formatted);
 }
 ```
 
-These examples illustrate how to utilize the component's output events to handle place selection, suggestions changes, and user input within your Angular application.
+**Used properties:**
 
-## Category Search Examples (V3)
+* `biasByProximity` – prioritizes results near the provided coordinates.
+* `placeholder` – displays guidance text inside the input field.
+* `placeSelect` – emits the selected place once a suggestion is chosen.
 
-Version 3.0 introduces powerful category search capabilities. Here are examples showing how to use these new features:
+## Showing a Loading Indicator During Search
 
-### 1. Basic Category Search
-
-Enable category search for POIs like restaurants, hotels, gas stations:
+This example displays a simple loading spinner while the autocomplete sends a request and hides it once the results are received.
 
 ```html
-<geoapify-geocoder-autocomplete 
-    [addCategorySearch]="true"
-    (places)="onPlacesChanged($event)"
-    (placeSelectEvent)="onPlaceSelected($event)">
+<div class="autocomplete-wrapper">
+  <geoapify-geocoder-autocomplete
+    placeholder="Search for an address"
+    (requestStart)="isLoading = true"
+    (requestEnd)="isLoading = false"
+    (placeSelect)="onPlaceSelected($event)">
+  </geoapify-geocoder-autocomplete>
+
+  <div *ngIf="isLoading" class="loader">Loading...</div>
+</div>
+```
+
+```typescript
+isLoading = false;
+
+onPlaceSelected(place: any) {
+  console.log('Selected place:', place.properties.formatted);
+}
+```
+
+**Used properties:**
+
+* `requestStart` – fires when a geocoding request starts.
+* `requestEnd` – fires when the request completes (success or failure).
+* `placeSelect` – emits the selected place from suggestions.
+* `placeholder` – text displayed inside the input field.
+
+
+## Searching for Places by Category
+
+This example enables category-based (POI) search using the Geoapify Places API.
+Users can type categories like *restaurant*, *hotel*, or *pharmacy* to find nearby points of interest.
+
+```html
+<geoapify-geocoder-autocomplete
+  [addCategorySearch]="true"
+  [showPlacesByCategoryList]="true"
+  [enablePlacesByCategoryLazyLoading]="true"
+  [placesByCategoryLimit]="10"
+  placeholder="Search for restaurants, hotels, or shops"
+  (placesByCategoryChange)="onPlacesLoaded($event)"
+  (placeSelect)="onPlaceSelected($event)"
+  (placeByCategorySelect)="onPlaceFromListSelected($event)">
 </geoapify-geocoder-autocomplete>
 ```
 
-### 2. Category Search with Built-in Places List
+```typescript
+onPlacesLoaded(places: any[]) {
+  console.log('Loaded POIs:', places);
+}
 
-Display places automatically in a list below the input:
+onPlaceSelected(place: any) {
+  console.log('Selected address:', place.properties.formatted);
+}
+
+onPlaceFromListSelected(event: { place: any; index: number }) {
+  console.log('Selected POI:', event.place.properties.name);
+}
+```
+
+**Used properties:**
+
+* `addCategorySearch` – enables category-based POI search.
+* `showPlacesByCategoryList` – displays a list of nearby POIs below the input field.
+* `enablePlacesByCategoryLazyLoading` – dynamically loads additional POIs as the user scrolls.
+* `placesByCategoryLimit` – sets the maximum number of POIs to display.
+* `placesByCategoryChange` – emits when POIs are loaded from the Places API.
+* `placeSelect` – emits when a user selects an address suggestion.
+* `placeByCategorySelect` – emits when a POI is selected from the list.
+* `placeholder` – shows guidance text inside the input field.
+
+## Preprocessing User Input with Filter by Area
+
+This example shows how to combine `preprocessingHook` with `filterByRect` to focus searches on a specific region — in this case, **Berlin**.
+The hook appends “Berlin” to each query, while the bounding box filter limits results to the city’s area.
 
 ```html
-<geoapify-geocoder-autocomplete 
-    [addCategorySearch]="true"
-    [showPlacesList]="true"
-    [enablePlacesLazyLoading]="true"
-    [placesLimit]="10"
-    [hidePlacesListAfterSelect]="true"
-    (placesRequestStart)="onPlacesRequestStart($event)"
-    (placesRequestEnd)="onPlacesRequestEnd($event)">
+<geoapify-geocoder-autocomplete
+  placeholder="Search for an address in Berlin"
+  [preprocessingHook]="addCityToQuery"
+  [filterByRect]="berlinBbox"
+  (placeSelect)="onPlaceSelected($event)">
 </geoapify-geocoder-autocomplete>
 ```
 
-### 3. Advanced Category Search with Filtering
+```typescript
+// Approximate bounding box for Berlin
+berlinBbox = {
+  lon1: 13.0884,  // west
+  lat1: 52.3383,  // south
+  lon2: 13.7611,  // east
+  lat2: 52.6755   // north
+};
 
-Configure places search with filters and bias:
+addCityToQuery(value: string): string {
+  // Ensure the city name is always part of the query
+  return `${value}, Berlin`;
+}
+
+onPlaceSelected(place: any) {
+  console.log('Selected place:', place.properties.formatted);
+}
+```
+
+**Used properties:**
+
+* `preprocessingHook` – appends “Berlin” to user queries.
+* `filterByRect` – restricts results to Berlin’s geographic area.
+* `placeholder` – displays hint text inside the input field.
+* `placeSelect` – fires when a user selects a search result.
+
+
+## Filtering Suggestions Programmatically
+
+Use `suggestionsFilter` to modify the suggestion list before it’s displayed.
+This example removes duplicates by street name and excludes results without a house number.
 
 ```html
-<geoapify-geocoder-autocomplete 
-    [addCategorySearch]="true"
-    [showPlacesList]="true"
-    [placesLimit]="15"
-    [placesFilter]="placesFilter"
-    [placesBias]="placesBias"
-    (places)="handlePlaces($event)"
-    (placeDetailsRequestStart)="onPlaceDetailsStart($event)"
-    (placeDetailsRequestEnd)="onPlaceDetailsEnd($event)">
+<geoapify-geocoder-autocomplete
+  placeholder="Search address"
+  [suggestionsFilter]="filterSuggestions"
+  (placeSelect)="onPlaceSelected($event)">
 </geoapify-geocoder-autocomplete>
 ```
 
-### 4. Handling Request Events
+```typescript
+filterSuggestions = (features: any[]) => {
+  const seen = new Set<string>();
 
-Monitor the status of geocoding and places requests:
+  return features.filter((f) => {
+    const props = f?.properties || {};
+    const street = props.street;
+    const hasHouseNumber = Boolean(props.housenumber);
 
-```html
-<geoapify-geocoder-autocomplete 
-    [addCategorySearch]="true"
-    (requestStart)="onGeocodingStart($event)"
-    (requestEnd)="onGeocodingEnd($event)"
-    (clear)="onClear($event)">
-</geoapify-geocoder-autocomplete>
+    if (!street || !hasHouseNumber) return false;
+    if (seen.has(street)) return false;
+
+    seen.add(street);
+    return true;
+  });
+};
+
+onPlaceSelected(place: any) {
+  console.log('Selected:', place.properties.formatted);
+}
 ```
 
+**Used properties:**
 
-These V3 examples demonstrate the new category search capabilities, enabling you to build rich location-based experiences with POI discovery alongside traditional address autocomplete.
+* `suggestionsFilter` – filters or reshapes suggestions before rendering.
+* `placeholder` – hint text for the input.
+* `placeSelect` – emits when a suggestion is chosen.
+
+## Learn More
+
+Explore more examples and customization options to get the most out of the Angular Geocoder Autocomplete component:
+
+* [Quick Start](quick-start.md) – learn how to install and integrate the component in your Angular app.
+* [API Reference](api-reference.md) – detailed list of all inputs, outputs, and customization hooks.
+* [Standalone Usage](standalone-usage.md) – use the core JavaScript library without Angular.
+* [Geoapify Geocoding API Docs](https://apidocs.geoapify.com/docs/geocoding) – explore available endpoints and parameters.
+* [Geoapify Address Autocomplete Guide](https://www.geoapify.com/address-autocomplete/) – learn about the underlying service powering autocomplete suggestions.
+* [@geoapify/geocoder-autocomplete on npm](https://www.npmjs.com/package/@geoapify/geocoder-autocomplete) – see more live demos and usage examples.

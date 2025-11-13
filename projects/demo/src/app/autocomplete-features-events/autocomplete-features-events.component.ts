@@ -92,11 +92,11 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
   }
 
   onOpen(event: any) {
-    this.logEvent('open', '');
+    this.logEvent('open', event);
   }
 
   onClose(event: any) {
-    this.logEvent('close', '');
+    this.logEvent('close', event);
   }
 
   onClear(context: any) {
@@ -159,8 +159,8 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
     try {
       const text = typeof obj === 'string' ? obj : JSON.stringify(obj, null, 2);
       return text.length > 800 ? text.slice(0, 800) + '…' : text;
-    } catch(e) {
-      return String(obj);
+    } catch(e: any) {
+      return String(obj) + ':' + String(e);
     }
   }
 

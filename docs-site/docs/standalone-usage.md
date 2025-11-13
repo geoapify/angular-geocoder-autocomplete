@@ -1,20 +1,25 @@
-# Standalone Usage of Geocoder-Autocomplete in Angular
+# Standalone Usage (Without Angular Wrapper)
 
-When considering the standalone usage of the `geocoder-autocomplete` library without a wrapper like `@geoapify/angular-geocoder-autocomplete`, it's important to note several advantages and characteristics:
+In some cases, you may want to use the `geocoder-autocomplete` library directly — without the `@geoapify/angular-geocoder-autocomplete` wrapper.
+This gives you full control over rendering, lifecycle, and styling, while keeping your setup lightweight.
 
-1. **Zero Dependencies**: The `geocoder-autocomplete` library is intentionally designed to be lightweight and independent of external dependencies, including Angular. This means you won't introduce additional third-party dependencies into your project, ensuring that your application remains free from any potential compatibility issues or conflicts related to Angular version updates.
+Use the standalone version if you want to:
 
-2. **Direct Control**: Using the library directly gives you more direct control over its behavior and integration within your Angular application. You can fine-tune and customize the library's features and configurations to suit your specific needs without relying on a wrapper's predefined settings.
+* Integrate address autocomplete into a non-Angular component or mixed environment.
+* Avoid adding Angular-specific dependencies.
+* Manage request logic, hooks, and styles manually for advanced customization.
 
-3. **Flexibility**: By integrating the library without a wrapper, you have the flexibility to update and maintain it independently of Angular version changes. This can be particularly beneficial if you need to stay up-to-date with the latest Angular releases or if you have a specific version requirement for your project.
+## Benefits of Standalone Integration
 
-4. **Performance**: As the library has zero dependencies and is used directly, it may offer slightly better performance compared to using a wrapper. This can be advantageous for performance-sensitive applications.
+1. **Zero Dependencies** – The library is pure JavaScript and does not depend on Angular or other frameworks, reducing bundle size and compatibility issues.
+2. **Direct Control** – You decide how and when to initialize, destroy, or style the component.
+3. **Flexibility** – It can be used across multiple frameworks or plain JS environments.
+4. **Performance** – No Angular overhead, ideal for lightweight or embedded widgets.
 
-Now, let's explore how to seamlessly integrate the geocoder-autocomplete library directly into your Angular project:
 
-## 1: Create a Container Element
+### 1. Create a Container Element
 
-In your HTML template, add a container element (e.g., a `<div>`) with a `position: relative` style to serve as the host for the `geocoder-autocomplete` control. This container will determine the position of the autocomplete suggestions dropdown.
+Add a container in your template to host the autocomplete control. The container should have `position: relative` to position the dropdown correctly.
 
 ```html
 <div #autocompleteContainer style="position: relative;">
@@ -22,9 +27,9 @@ In your HTML template, add a container element (e.g., a `<div>`) with a `positio
 </div>
 ```
 
-## 2. Add the Control as a ViewChild
+### 2. Reference the Container with ViewChild
 
-In your Angular component, import `ViewChild` from `@angular/core` and declare a `ViewChild` property to reference the container element from your template.
+Use `@ViewChild` to access the container element from your component class.
 
 ```typescript
 import { Component, ElementRef, ViewChild } from '@angular/core';
@@ -36,16 +41,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 })
 export class YourComponent {
   @ViewChild('autocompleteContainer', { static: true }) autocompleteContainer!: ElementRef;
-  
-  // Other component code
 }
 ```
 
-Make sure to provide a template reference variable (`#autocompleteContainer`) in your HTML template to match the ViewChild property's name.
 
-## 3. Create Geocoder-Autocomplete
+### 3. Initialize Geocoder-Autocomplete
 
-In your component's TypeScript file, create an instance of `GeocoderAutocomplete` and initialize it using the container element you referenced in Step 2. You can also customize various options as needed.
+In your component, create and configure a new `GeocoderAutocomplete` instance after the view initializes.
 
 ```typescript
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
@@ -64,24 +66,28 @@ export class YourComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     const container = this.autocompleteContainer.nativeElement;
 
-    // Customize your Geocoder-Autocomplete options
     const options: GeocoderAutocompleteOptions = {
-      // Add your options here
+      apiKey: 'YOUR_GEOAPIFY_API_KEY', // required for requests
+      placeholder: 'Search for an address'
     };
 
-    // Create an instance of Geocoder-Autocomplete
     this.geocoderAutocomplete = new GeocoderAutocomplete(container, options);
+
+    // Optional: listen for selection
+    this.geocoderAutocomplete.on('select', (feature) => {
+      console.log('Selected place:', feature.properties.formatted);
+    });
   }
-  
-  // Other component code
 }
 ```
 
-Ensure that you import the necessary classes and provide any customization options required for your project.
 
-## 4: Add Styles to Your Angular Project
+### 4. Add Styles
 
-Don't forget to add the necessary CSS styles to your Angular project. You can include the `geocoder-autocomplete` styles by adding them to your Angular project's `angular.json` file or by importing them in your global CSS/SCSS file.
+Include one of the built-in styles in your project.
+You can either import via `angular.json` or directly in your global stylesheet.
+
+**Option 1: `angular.json`**
 
 ```json
 "styles": [
@@ -90,11 +96,22 @@ Don't forget to add the necessary CSS styles to your Angular project. You can in
 ],
 ```
 
-With these steps, you've successfully integrated the `geocoder-autocomplete` control directly into your Angular project, giving you full control over its functionality and appearance.
+**Option 2: `styles.scss`**
 
-## Geoapify Geocoding API documentation
+```scss
+@import "~@geoapify/geocoder-autocomplete/styles/minimal.css";
+```
+
+
+You’ve now integrated the `geocoder-autocomplete` widget directly into your Angular project — without using the wrapper.
+This setup gives you complete control over initialization, styling, and API behavior.
+
+
+### Geoapify API Resources
+
 * [Geocoding API Documentation](https://apidocs.geoapify.com/docs/geocoding)
 * [Place Details API Documentation](https://apidocs.geoapify.com/docs/place-details)
 * [Geocoding API Playground](https://apidocs.geoapify.com/playground/geocoding)
-* [Register and get Geoapify API key](https://myprojects.geoapify.com)
-* [Geoapify APIs](https://www.geoapify.com/)
+* [Register and get your API key](https://myprojects.geoapify.com)
+* [Geoapify APIs Overview](https://www.geoapify.com/)
+

@@ -23,11 +23,10 @@ import {
   ByCircleOptions,
   ByRectOptions,
   ByProximityOptions,
-  Category
+  Category,
+  ItemType
 } from '@geoapify/geocoder-autocomplete';
 import { GeoapifyConfig, GEOAPIFY_CONFIG } from './geoapify-config';
-import { ItemType } from "@geoapify/geocoder-autocomplete/dist/types/external";
-
 
 @Component({
   selector: 'geoapify-geocoder-autocomplete',
@@ -87,24 +86,24 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   addCategorySearch: boolean;
 
   @Input()
-  showPlacesList: boolean;
+  showPlacesByCategoryList: boolean;
 
   @Input()
-  hidePlacesListAfterSelect: boolean;
+  hidePlacesByCategoryListAfterSelect: boolean;
 
   @Input()
-  enablePlacesLazyLoading: boolean;
+  enablePlacesByCategoryLazyLoading: boolean;
 
   @Input()
-  placesLimit: number;
+  placesByCategoryLimit: number;
 
   @Input()
-  placesFilter: {
+  placesByCategoryFilter: {
     [key: string]: ByCircleOptions | ByRectOptions | string;
   };
 
   @Input()
-  placesBias: {
+  placesByCategoryBias: {
     [key: string]: ByCircleOptions | ByRectOptions | ByProximityOptions;
   };
 
@@ -145,7 +144,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   sendPlaceDetailsRequestFunc: (feature: any, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
 
   @Input()
-  sendPlacesRequestFunc: (category: string[], offset: number, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
+  sendPlacesByCategoryRequestFunc: (category: string[], offset: number, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
 
   @Output()
   placeSelect: EventEmitter<any> = new EventEmitter<any>();
@@ -169,13 +168,13 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   requestEnd: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
-  places: EventEmitter<any[]> = new EventEmitter<any[]>();
+  placesByCategoryChange: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   @Output()
-  placesRequestStart: EventEmitter<Category> = new EventEmitter<Category>();
+  placesByCategoryRequestStart: EventEmitter<Category> = new EventEmitter<Category>();
 
   @Output()
-  placesRequestEnd: EventEmitter<{success: boolean, data?: any, error?: any}> =
+  placesByCategoryRequestEnd: EventEmitter<{success: boolean, data?: any, error?: any}> =
     new EventEmitter<{success: boolean, data?: any, error?: any}>();
 
   @Output()
@@ -186,7 +185,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     new EventEmitter<{success: boolean, data?: any, error?: any}>();
 
   @Output()
-  placeSelectEvent: EventEmitter<{place: any, index: number}> =
+  placeByCategorySelect: EventEmitter<{place: any, index: number}> =
     new EventEmitter<{place: any, index: number}>();
 
   @Output()
@@ -248,28 +247,28 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
       options.addCategorySearch = this.addCategorySearch;
     }
 
-    if (this.showPlacesList !== undefined) {
-      options.showPlacesList = this.showPlacesList;
+    if (this.showPlacesByCategoryList !== undefined) {
+      options.showPlacesList = this.showPlacesByCategoryList;
     }
 
-    if (this.hidePlacesListAfterSelect !== undefined) {
-      options.hidePlacesListAfterSelect = this.hidePlacesListAfterSelect;
+    if (this.hidePlacesByCategoryListAfterSelect !== undefined) {
+      options.hidePlacesListAfterSelect = this.hidePlacesByCategoryListAfterSelect;
     }
 
-    if (this.enablePlacesLazyLoading !== undefined) {
-      options.enablePlacesLazyLoading = this.enablePlacesLazyLoading;
+    if (this.enablePlacesByCategoryLazyLoading !== undefined) {
+      options.enablePlacesLazyLoading = this.enablePlacesByCategoryLazyLoading;
     }
 
-    if (this.placesLimit) {
-      options.placesLimit = this.placesLimit;
+    if (this.placesByCategoryLimit) {
+      options.placesLimit = this.placesByCategoryLimit;
     }
 
-    if (this.placesFilter) {
-      options.placesFilter = this.placesFilter;
+    if (this.placesByCategoryFilter) {
+      options.placesFilter = this.placesByCategoryFilter;
     }
 
-    if (this.placesBias) {
-      options.placesBias = this.placesBias;
+    if (this.placesByCategoryBias) {
+      options.placesBias = this.placesByCategoryBias;
     }
 
     this.autocomplete = new GeocoderAutocomplete(this.container.nativeElement, this.config.apiKey, options);
@@ -336,8 +335,8 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
       this.autocomplete.setSendPlaceDetailsRequestFunc(this.sendPlaceDetailsRequestFunc);
     }
 
-    if (this.sendPlacesRequestFunc) {
-      this.autocomplete.setSendPlacesRequestFunc(this.sendPlacesRequestFunc);
+    if (this.sendPlacesByCategoryRequestFunc) {
+      this.autocomplete.setSendPlacesRequestFunc(this.sendPlacesByCategoryRequestFunc);
     }
 
     this.autocomplete.on('select', this.onSelect.bind(this));
@@ -347,12 +346,12 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     this.autocomplete.on('close', this.onClose.bind(this));
     this.autocomplete.on('request_start', this.onRequestStart.bind(this));
     this.autocomplete.on('request_end', this.onRequestEnd.bind(this));
-    this.autocomplete.on('places', this.onPlaces.bind(this));
-    this.autocomplete.on('places_request_start', this.onPlacesRequestStart.bind(this));
-    this.autocomplete.on('places_request_end', this.onPlacesRequestEnd.bind(this));
+    this.autocomplete.on('places', this.onPlacesByCategoryChange.bind(this));
+    this.autocomplete.on('places_request_start', this.onPlacesByCategoryRequestStart.bind(this));
+    this.autocomplete.on('places_request_end', this.onPlacesByCategoryRequestEnd.bind(this));
     this.autocomplete.on('place_details_request_start', this.onPlaceDetailsRequestStart.bind(this));
     this.autocomplete.on('place_details_request_end', this.onPlaceDetailsRequestEnd.bind(this));
-    this.autocomplete.on('place_select', this.onPlaceSelectEvent.bind(this));
+    this.autocomplete.on('place_select', this.onPlaceByCategorySelect.bind(this));
     this.autocomplete.on('clear', this.onClear.bind(this));
   }
 
@@ -384,16 +383,16 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     this.requestEnd.emit(value);
   }
 
-  onPlaces(places: any[]) {
-    this.places.emit(places);
+  onPlacesByCategoryChange(places: any[]) {
+    this.placesByCategoryChange.emit(places);
   }
 
-  onPlacesRequestStart(value: Category) {
-    this.placesRequestStart.emit(value);
+  onPlacesByCategoryRequestStart(value: Category) {
+    this.placesByCategoryRequestStart.emit(value);
   }
 
-  onPlacesRequestEnd(value: {success: boolean, data?: any, error?: any}) {
-    this.placesRequestEnd.emit(value);
+  onPlacesByCategoryRequestEnd(value: {success: boolean, data?: any, error?: any}) {
+    this.placesByCategoryRequestEnd.emit(value);
   }
 
   onPlaceDetailsRequestStart(value: any) {
@@ -404,8 +403,8 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     this.placeDetailsRequestEnd.emit(value);
   }
 
-  onPlaceSelectEvent(value: {place: any, index: number}) {
-    this.placeSelectEvent.emit(value);
+  onPlaceByCategorySelect(value: {place: any, index: number}) {
+    this.placeByCategorySelect.emit(value);
   }
 
   onClear(value: ItemType) {
@@ -509,7 +508,6 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
       !changes['allowNonVerifiedStreet'].isFirstChange()) {
       this.autocomplete.setAllowNonVerifiedStreet(changes['allowNonVerifiedStreet'].currentValue);
     }
-
   }
 
   selectCategory(category: Category | string | string[] | null): Promise<void> {

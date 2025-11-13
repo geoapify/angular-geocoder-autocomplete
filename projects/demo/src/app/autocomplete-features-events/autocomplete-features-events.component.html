@@ -7,10 +7,10 @@
     <div class="autocomplete-container">
       <geoapify-geocoder-autocomplete
         #autocomplete
-        [showPlacesList]="true"
-        [enablePlacesLazyLoading]="true"
+        [showPlacesByCategoryList]="true"
+        [enablePlacesByCategoryLazyLoading]="true"
         [limit]="8"
-        [hidePlacesListAfterSelect]="true"
+        [hidePlacesByCategoryListAfterSelect]="true"
         [skipIcons]="false"
         [placeholder]="'Type to search addresses or categories…'"
         [addCategorySearch]="options.addCategorySearch"
@@ -26,10 +26,10 @@
         (clear)="onClear($event)"
         (placeDetailsRequestStart)="onPlaceDetailsRequestStart($event)"
         (placeDetailsRequestEnd)="onPlaceDetailsRequestEnd($event)"
-        (placesRequestStart)="onPlacesRequestStart($event)"
-        (placesRequestEnd)="onPlacesRequestEnd($event)"
-        (places)="onPlaces($event)"
-        (placeSelectEvent)="onPlaceSelectEvent($event)">
+        (placesByCategoryRequestStart)="onPlacesRequestStart($event)"
+        (placesByCategoryRequestEnd)="onPlacesRequestEnd($event)"
+        (placesByCategoryChange)="onPlaces($event)"
+        (placeByCategorySelect)="onPlaceSelectEvent($event)">
       </geoapify-geocoder-autocomplete>
     </div>
     <div class="hint" style="margin-top:6px;">Tip: Category mode is enabled to show Places-related events as well.</div>

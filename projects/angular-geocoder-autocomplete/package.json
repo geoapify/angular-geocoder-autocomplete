@@ -5,7 +5,7 @@
   "peerDependencies": {
     "@angular/common": "19.0.0 - 20.99999.99999",
     "@angular/core": "19.0.0 - 20.99999.99999",
-    "@geoapify/geocoder-autocomplete": "^3.0.0"
+    "@geoapify/geocoder-autocomplete": "^3.0.1"
   },
   "dependencies": {
     "tslib": "^2.7.0"
@@ -25,7 +25,7 @@
     "location"
   ],
   "author": {
-    "name": "Geoapify GmbH",
+    "name": "Geoapify",
     "email": "info@geoapify.com",
     "url": "https://geoapify.com"
   },

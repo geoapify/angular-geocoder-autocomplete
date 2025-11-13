@@ -46,15 +46,7 @@ jobs:
         working-directory: docs-site
         run: mkdocs build --strict
 
-      # --- 3. Copy dist and demo into built site ---
-      - name: Copy demo and dist folders
-        run: |
-          mkdir -p docs-site/site/demo
-          rsync -a dist/demo/ docs-site/site/demo/
-          mkdir -p docs-site/site/dist
-          rsync -a dist/angular-geocoder-autocomplete/ docs-site/site/dist/
-
-      # --- 4. Deploy everything to GitHub Pages ---
+      # --- 3. Deploy everything to GitHub Pages ---
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
