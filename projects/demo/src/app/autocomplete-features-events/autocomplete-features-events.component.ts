@@ -32,7 +32,7 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
   events: EventConfig[] = [
     { key: 'select', label: 'select', enabled: true },
     { key: 'suggestions', label: 'suggestions', enabled: true },
-    { key: 'input', label: 'input', enabled: true },
+    { key: 'userInput', label: 'userInput', enabled: true },
     { key: 'close', label: 'close', enabled: true },
     { key: 'open', label: 'open', enabled: true },
     { key: 'request_start', label: 'request_start', enabled: true },
@@ -67,7 +67,7 @@ export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewIni
 
   // Event handlers
   onInput(text: any) {
-    this.logEvent('input', this.format({ text }));
+    this.logEvent('userInput', this.format({ text }));
   }
 
   onRequestStart(query: any) {
