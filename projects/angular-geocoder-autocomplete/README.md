@@ -305,14 +305,14 @@ Displays nearby Points of Interest (POIs) below the input field, filtered by cat
 
 ```html
 <geoapify-geocoder-autocomplete
-  (clear)="onClear()"
+  (clear)="onClear($event)"
   placeholder="Search address">
 </geoapify-geocoder-autocomplete>
 ```
 
 ```typescript
-onClear() {
-  console.log('Selection cleared');
+onClear(itemType: ItemType) {
+  console.log('Selection cleared:', itemType);
 }
 ```
 
