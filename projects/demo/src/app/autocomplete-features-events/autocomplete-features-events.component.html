@@ -38,13 +38,15 @@
   <div class="panel">
     <h3>2. Events</h3>
     <div class="event-grid">
-      <label *ngFor="let event of events" style="display:flex; gap:8px; align-items:center;">
-        <input
-          type="checkbox"
-          [(ngModel)]="event.enabled"
-          (change)="toggleEvent(event)">
-        <span>{{ event.label }}</span>
-      </label>
+      @for (event of events; track event) {
+        <label style="display:flex; gap:8px; align-items:center;">
+          <input
+            type="checkbox"
+            [(ngModel)]="event.enabled"
+            (change)="toggleEvent(event)">
+          <span>{{ event.label }}</span>
+        </label>
+      }
     </div>
     <div style="margin-top:10px; display:flex; gap:8px;">
       <button (click)="enableAllEvents()">Enable All</button>
@@ -56,11 +58,13 @@
   <div class="panel">
     <h3>Console</h3>
     <div #consoleElement class="console" aria-live="polite">
-      <div *ngFor="let log of consoleLogs" class="line">
-        <span class="ts">{{ log.timestamp }}</span>
-        <span class="evt">{{ log.event }}</span>
-        <span class="payload">{{ log.payload }}</span>
-      </div>
+      @for (log of consoleLogs; track log) {
+        <div class="line">
+          <span class="ts">{{ log.timestamp }}</span>
+          <span class="evt">{{ log.event }}</span>
+          <span class="payload">{{ log.payload }}</span>
+        </div>
+      }
     </div>
   </div>
 </div>
