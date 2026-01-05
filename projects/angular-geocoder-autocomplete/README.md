@@ -124,8 +124,9 @@ onSuggestionsChange(list: any[]) {
 | --------------------------------------- | --------------- |
 | 1.0.x – 1.3.x                           | 9.x–14.x        |
 | 2.0.0 – 2.0.2                           | 15.x–18.x       |
-| 2.2.0+                                  | 19.x–20.x       |
-
+| 2.0.3 - 2.2.x                           | 19.x–20.x       |
+| 3.0.1+                                  | 21.x            |
+ 
 > If you prefer to use the library directly without Angular bindings, check the **[Standalone Usage](https://geoapify.github.io/angular-geocoder-autocomplete/standalone-usage/)** section.
 
 
