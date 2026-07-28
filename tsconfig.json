@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "esModuleInterop": true,
@@ -13,8 +12,8 @@
     "target": "ES2022",
     "paths": {
       "angular-geocoder-autocomplete": [
-        "dist/angular-geocoder-autocomplete/angular-geocoder-autocomplete",
-        "dist/angular-geocoder-autocomplete"
+        "./dist/angular-geocoder-autocomplete/angular-geocoder-autocomplete",
+        "./dist/angular-geocoder-autocomplete"
       ]
     },
     "useDefineForClassFields": false

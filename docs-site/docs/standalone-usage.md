@@ -67,11 +67,14 @@ export class YourComponent implements AfterViewInit {
     const container = this.autocompleteContainer.nativeElement;
 
     const options: GeocoderAutocompleteOptions = {
-      apiKey: 'YOUR_GEOAPIFY_API_KEY', // required for requests
       placeholder: 'Search for an address'
     };
 
-    this.geocoderAutocomplete = new GeocoderAutocomplete(container, options);
+    this.geocoderAutocomplete = new GeocoderAutocomplete(
+      container,
+      'YOUR_GEOAPIFY_API_KEY',
+      options
+    );
 
     // Optional: listen for selection
     this.geocoderAutocomplete.on('select', (feature) => {
@@ -99,7 +102,7 @@ You can either import via `angular.json` or directly in your global stylesheet.
 **Option 2: `styles.scss`**
 
 ```scss
-@import "~@geoapify/geocoder-autocomplete/styles/minimal.css";
+@import "@geoapify/geocoder-autocomplete/styles/minimal.css";
 ```
 
 
@@ -114,4 +117,3 @@ This setup gives you complete control over initialization, styling, and API beha
 * [Geocoding API Playground](https://apidocs.geoapify.com/playground/geocoding)
 * [Register and get your API key](https://myprojects.geoapify.com)
 * [Geoapify APIs Overview](https://www.geoapify.com/)
-

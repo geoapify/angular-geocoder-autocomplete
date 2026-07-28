@@ -10,7 +10,8 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
-  Inject
+  Inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   GeocoderAutocomplete,
@@ -34,117 +35,118 @@ import { GeoapifyConfig, GEOAPIFY_CONFIG } from './geoapify-config';
   styles: [
     '.geocoder-container {position: relative}'
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
-  autocomplete: GeocoderAutocomplete;
+  autocomplete!: GeocoderAutocomplete;
 
   @ViewChild('container')
-  container: ElementRef;
+  container!: ElementRef;
 
   @Input()
-  value: string;
+  value!: string;
 
   @Input()
-  placeholder: string;
+  placeholder!: string;
 
   @Input()
-  type: LocationType;
+  type!: LocationType;
 
   @Input()
-  skipIcons: boolean;
+  skipIcons!: boolean;
 
   @Input()
-  addDetails: boolean;
+  addDetails!: boolean;
 
   @Input()
-  lang: SupportedLanguage;
+  lang!: SupportedLanguage;
 
   @Input()
-  filterByCountryCode: ByCountryCodeOptions;
+  filterByCountryCode!: ByCountryCodeOptions;
 
   @Input()
-  filterByCircle: ByCircleOptions;
+  filterByCircle!: ByCircleOptions;
 
   @Input()
-  filterByRect: ByRectOptions;
+  filterByRect!: ByRectOptions;
 
   @Input()
-  biasByCountryCode: ByCountryCodeOptions;
+  biasByCountryCode!: ByCountryCodeOptions;
 
   @Input()
-  biasByCircle: ByCircleOptions;
+  biasByCircle!: ByCircleOptions;
 
   @Input()
-  biasByRect: ByRectOptions;
+  biasByRect!: ByRectOptions;
 
   @Input()
-  biasByProximity: ByProximityOptions;
+  biasByProximity!: ByProximityOptions;
 
   @Input()
-  addCategorySearch: boolean;
+  addCategorySearch!: boolean;
 
   @Input()
-  showPlacesByCategoryList: boolean;
+  showPlacesByCategoryList!: boolean;
 
   @Input()
-  hidePlacesByCategoryListAfterSelect: boolean;
+  hidePlacesByCategoryListAfterSelect!: boolean;
 
   @Input()
-  enablePlacesByCategoryLazyLoading: boolean;
+  enablePlacesByCategoryLazyLoading!: boolean;
 
   @Input()
-  placesByCategoryLimit: number;
+  placesByCategoryLimit!: number;
 
   @Input()
-  placesByCategoryFilter: {
+  placesByCategoryFilter!: {
     [key: string]: ByCircleOptions | ByRectOptions | string;
   };
 
   @Input()
-  placesByCategoryBias: {
+  placesByCategoryBias!: {
     [key: string]: ByCircleOptions | ByRectOptions | ByProximityOptions;
   };
 
   @Input()
-  countryCodes: CountyCode[];   // deprecated
+  countryCodes!: CountyCode[];   // deprecated
 
   @Input()
-  position: GeoPosition;   // deprecated
+  position!: GeoPosition;   // deprecated
 
   @Input()
-  limit: number;
+  limit!: number;
 
   @Input()
-  debounceDelay: number;
+  debounceDelay!: number;
 
   @Input()
-  allowNonVerifiedHouseNumber: boolean;
+  allowNonVerifiedHouseNumber!: boolean;
 
   @Input()
-  allowNonVerifiedStreet: boolean;
+  allowNonVerifiedStreet!: boolean;
 
   @Input()
-  skipSelectionOnArrowKey: boolean;
+  skipSelectionOnArrowKey!: boolean;
 
   @Input()
-  preprocessingHook: (value: string) => string;
+  preprocessingHook!: (value: string) => string;
 
   @Input()
-  postprocessingHook: (feature: any) => string;
+  postprocessingHook!: (feature: any) => string;
 
   @Input()
-  suggestionsFilter: (suggestions: any[]) => any[];
+  suggestionsFilter!: (suggestions: any[]) => any[];
 
   @Input()
-  sendGeocoderRequestFunc: (value: string, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
+  sendGeocoderRequestFunc!: (value: string, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
 
   @Input()
-  sendPlaceDetailsRequestFunc: (feature: any, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
+  sendPlaceDetailsRequestFunc!: (feature: any, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
 
   @Input()
-  sendPlacesByCategoryRequestFunc: (category: string[], offset: number, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
+  sendPlacesByCategoryRequestFunc!: (category: string[], offset: number, geocoderAutocomplete: GeocoderAutocomplete) => Promise<any>;
 
   @Output()
   placeSelect: EventEmitter<any> = new EventEmitter<any>();
@@ -162,10 +164,11 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
   close: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output()
-  requestStart: EventEmitter<any> = new EventEmitter<any>();
+  requestStart: EventEmitter<string> = new EventEmitter<string>();
 
   @Output()
-  requestEnd: EventEmitter<any> = new EventEmitter<any>();
+  requestEnd: EventEmitter<{success: boolean, data?: any, error?: any}> =
+    new EventEmitter<{success: boolean, data?: any, error?: any}>();
 
   @Output()
   placesByCategoryChange: EventEmitter<any[]> = new EventEmitter<any[]>();
@@ -283,7 +286,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     }
 
     if (this.position) {
-      console.warn("WARNING! Obsolete function called. The  'position' input has been deprecated, please use the new 'biasByLocation' input instead!");
+      console.warn("WARNING! Obsolete function called. The  'position' input has been deprecated, please use the new 'biasByProximity' input instead!");
       this.autocomplete.addBiasByProximity(this.position);
     }
 
@@ -375,12 +378,12 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     this.close.emit(opened);
   }
 
-  onRequestStart(value: any) {
-    this.requestStart.emit(value);
+  onRequestStart(query: string) {
+    this.requestStart.emit(query);
   }
 
-  onRequestEnd(value: any) {
-    this.requestEnd.emit(value);
+  onRequestEnd(success: boolean, data?: any, error?: any) {
+    this.requestEnd.emit({success, data, error});
   }
 
   onPlacesByCategoryChange(places: any[]) {
@@ -391,20 +394,20 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
     this.placesByCategoryRequestStart.emit(value);
   }
 
-  onPlacesByCategoryRequestEnd(value: {success: boolean, data?: any, error?: any}) {
-    this.placesByCategoryRequestEnd.emit(value);
+  onPlacesByCategoryRequestEnd(success: boolean, data?: any, error?: any) {
+    this.placesByCategoryRequestEnd.emit({success, data, error});
   }
 
   onPlaceDetailsRequestStart(value: any) {
     this.placeDetailsRequestStart.emit(value);
   }
 
-  onPlaceDetailsRequestEnd(value: {success: boolean, data?: any, error?: any}) {
-    this.placeDetailsRequestEnd.emit(value);
+  onPlaceDetailsRequestEnd(success: boolean, data?: any, error?: any) {
+    this.placeDetailsRequestEnd.emit({success, data, error});
   }
 
-  onPlaceByCategorySelect(value: {place: any, index: number}) {
-    this.placeByCategorySelect.emit(value);
+  onPlaceByCategorySelect(place: any, index: number) {
+    this.placeByCategorySelect.emit({place, index});
   }
 
   onClear(value: ItemType) {
@@ -475,7 +478,7 @@ export class GeocoderAutocompleteComponent implements OnInit, AfterViewInit, OnC
 
     if (changes['position'] &&
       !changes['position'].isFirstChange()) {
-      console.warn("WARNING! Obsolete function called. The  'position' input has been deprecated, please use the new 'biasByLocation' input instead!");
+      console.warn("WARNING! Obsolete function called. The  'position' input has been deprecated, please use the new 'biasByProximity' input instead!");
       this.autocomplete.addBiasByProximity(changes['position'].currentValue);
     }
 

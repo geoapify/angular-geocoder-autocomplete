@@ -13,7 +13,7 @@ It’s designed to offer a fast, accessible, and customizable autocomplete exper
 
 ## Features
 
-* **Simple Angular integration** – The component can be imported and used directly in any Angular application. It supports both **Standalone Components** and **NgModule**-based architectures.
+* **Simple Angular integration** – Import `GeoapifyGeocoderAutocompleteModule` in an NgModule. Standalone applications can import the module in a component and configure it with `importProvidersFrom`.
 
 * **Fast and responsive search** – Built-in request debouncing and cancellation ensure smooth typing without unnecessary API calls, even during rapid input changes.
 
@@ -21,13 +21,13 @@ It’s designed to offer a fast, accessible, and customizable autocomplete exper
 
 * **Flexible configuration** – Easily adjust search behavior using parameters such as `bias`, `filter`, and `limit`. You can also restrict results to a bounding box or preferred region.
 
-* **Customizable design** – Provides hooks for custom templates and CSS styling, allowing seamless integration into any UI theme or design system.
+* **Customizable design** – Provides processing hooks and bundled CSS themes that can be extended for your application.
 
-* **Accessible interface** – Fully keyboard-navigable and ARIA-compliant, making it suitable for accessibility-focused web applications.
+* **Keyboard navigation** – Supports keyboard-based suggestion navigation and selection.
 
 * **Rich structured output** – Emits detailed selection events containing coordinates, formatted addresses, and Geoapify metadata that can be directly used in your app logic.
 
-* **Angular compatibility** – Works with Angular 15 and newer versions. The recommended setup is **Angular 16+** for the best performance and API alignment.
+* **Angular compatibility** – Version 3.1.x supports Angular 19 through Angular 22 and uses `@geoapify/geocoder-autocomplete` 3.1.x.
 
 ## Learn More
 

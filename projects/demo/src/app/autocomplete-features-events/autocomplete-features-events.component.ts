@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { GeocoderAutocompleteComponent } from '../../../../angular-geocoder-autocomplete/src/lib/geocoder-autocomplete.component';
 
 interface EventConfig {
@@ -23,6 +23,7 @@ interface ConsoleLog {
   selector: 'app-autocomplete-features-events',
   templateUrl: './autocomplete-features-events.component.html',
   styleUrls: ['./autocomplete-features-events.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class AutocompleteFeaturesEventsComponent implements OnInit, AfterViewInit {

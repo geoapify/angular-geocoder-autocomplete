@@ -1,0 +1,53 @@
+name: Angular compatibility
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  compatibility:
+    name: Angular ${{ matrix.angular }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - angular: 19.2.19
+            typescript: 5.8.3
+          - angular: 20.3.15
+            typescript: 5.9.3
+          - angular: 21.2.5
+            typescript: 5.9.3
+          - angular: 22.0.8
+            typescript: 6.0.3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.3'
+          cache: npm
+
+      - name: Install workspace dependencies
+        run: npm ci
+
+      - name: Build publishable library package
+        run: npm run build -- --configuration production
+
+      - name: Pack library
+        run: |
+          mkdir -p .compat
+          npm pack ./dist/angular-geocoder-autocomplete --pack-destination .compat
+
+      - name: Compile Angular ${{ matrix.angular }} consumer
+        run: >
+          node scripts/test-angular-compatibility.mjs
+          .compat
+          ${{ matrix.angular }}
+          ${{ matrix.typescript }}

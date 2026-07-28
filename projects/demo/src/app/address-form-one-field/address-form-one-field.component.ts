@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, Inject } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GEOAPIFY_CONFIG, GeoapifyConfig } from '../../../../angular-geocoder-autocomplete/src/lib/geoapify-config';
 
@@ -35,6 +35,7 @@ interface DevPanel {
   selector: 'app-address-form-one-field',
   templateUrl: './address-form-one-field.component.html',
   styleUrls: ['./address-form-one-field.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class AddressFormOneFieldComponent implements AfterViewInit {

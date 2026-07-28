@@ -34,20 +34,27 @@ The Angular Geocoder Autocomplete component exposes several **inputs** and **out
 | `preprocessingHook`           | `(value: string) => string`                          | Input     | Modify input before request.                                     |
 | `postprocessingHook`          | `(feature: GeoJSON.Feature) => string`               | Input     | Modify selected result before display.                           |
 | `suggestionsFilter`           | `(features: GeoJSON.Feature[]) => GeoJSON.Feature[]` | Input     | Filter suggestions before display.                               |
+| `sendGeocoderRequestFunc`     | `(value, autocomplete) => Promise<any>`               | Input     | Replace the default geocoding request implementation.            |
+| `sendPlaceDetailsRequestFunc` | `(feature, autocomplete) => Promise<any>`             | Input     | Replace the default place-details request implementation.        |
+| `sendPlacesByCategoryRequestFunc` | `(categories, offset, autocomplete) => Promise<any>` | Input | Replace the default category/Places request implementation.      |
+| `countryCodes`                | `CountyCode[]`                                        | Input     | Deprecated; use `filterByCountryCode`.                           |
+| `position`                    | `GeoPosition`                                         | Input     | Deprecated; use `biasByProximity`.                               |
 | `placeSelect`                 | `EventEmitter<GeoJSON.Feature>`                      | Output    | Fires when a user selects a place.                               |
 | `suggestionsChange`           | `EventEmitter<GeoJSON.Feature[]>`                    | Output    | Fires when suggestions are updated.                              |
 | `userInput`                   | `EventEmitter<string>`                               | Output    | Fires on user input changes.                                     |
 | `open`                        | `EventEmitter<boolean>`                              | Output    | Fires when the dropdown opens.                                   |
 | `close`                       | `EventEmitter<boolean>`                              | Output    | Fires when the dropdown closes.                                  |
-| `requestStart`                | `EventEmitter<void>`                                 | Output    | Fires when a geocoding request starts.                           |
-| `requestEnd`                  | `EventEmitter<void>`                                 | Output    | Fires when a geocoding request completes.                        |
+| `requestStart`                | `EventEmitter<string>`                               | Output    | Emits the query when a geocoding request starts.                 |
+| `requestEnd`                  | `EventEmitter<{success, data?, error?}>`             | Output    | Emits the result when a geocoding request completes.             |
 | `placesByCategoryChange`                      | `EventEmitter<any[]>`                                | Output    | Emits POI results when category search is active.                |
-| `placesByCategoryRequestStart`          | `EventEmitter<void>`                                 | Output    | Fires when a POI request starts.                                 |
-| `placesByCategoryRequestEnd`            | `EventEmitter<{success: boolean}>`                   | Output    | Fires when a POI request ends.                                   |
-| `placeDetailsRequestStart`    | `EventEmitter<void>`                                 | Output    | Fires when a place details request starts.                       |
-| `placeDetailsRequestEnd`      | `EventEmitter<{success: boolean}>`                   | Output    | Fires when a place details request ends.                         |
+| `placesByCategoryRequestStart`          | `EventEmitter<Category>`                             | Output    | Emits the selected category when a POI request starts.           |
+| `placesByCategoryRequestEnd`            | `EventEmitter<{success, data?, error?}>`             | Output    | Emits the result when a POI request ends.                        |
+| `placeDetailsRequestStart`    | `EventEmitter<GeoJSON.Feature>`                      | Output    | Emits the place when a place-details request starts.             |
+| `placeDetailsRequestEnd`      | `EventEmitter<{success, data?, error?}>`             | Output    | Emits the result when a place-details request ends.              |
 | `placeByCategorySelect`            | `EventEmitter<{place: any, index: number}>`          | Output    | Fires when a POI is selected from the list.                      |
-| `clear`                       | `EventEmitter<void>`                                 | Output    | Fires when the field or selection is cleared.                    |
+| `clear`                       | `EventEmitter<ItemType>`                             | Output    | Emits `address` or `category` when that selection is cleared.    |
+
+> **Upgrading from 3.0.1:** In 3.1.x, `requestEnd`, `placesByCategoryRequestEnd`, and `placeDetailsRequestEnd` emit `{ success, data, error }`. `placeByCategorySelect` emits `{ place, index }`. Event handlers that previously consumed a boolean or place directly must read the corresponding property from the new event object.
 
 Each input property allows you to control how the autocomplete behaves and appears.
 Inputs can be bound to Angular component variables, enabling dynamic updates and reactive configurations.
@@ -236,7 +243,7 @@ userLocation = { lon: -73.935242, lat: 40.73061 };
 ```
 
 ```typescript
-preferredCountries = ['US'];
+preferredCountries = ['us'];
 ```
 
 
@@ -417,7 +424,7 @@ maxPlaces = 10;
 ### `placesByCategoryFilter` (Input)
 
 **Type:** `object`
-**Description:** Defines filters for category-based searches, such as location or category constraints.
+**Description:** Defines spatial filters for category-based searches. Supported keys include `circle`, `rect`, `place`, and `geometry`.
 
 **Example:**
 
@@ -430,7 +437,7 @@ maxPlaces = 10;
 
 ```typescript
 placesByCategoryFilter = {
-  filter: { circle: { lon: -73.935242, lat: 40.73061, radiusMeters: 5000 } }
+  circle: { lon: -73.935242, lat: 40.73061, radiusMeters: 5000 }
 };
 ```
 
@@ -450,7 +457,7 @@ placesByCategoryFilter = {
 
 ```typescript
 placesByCategoryBias = {
-  bias: { proximity: { lon: -73.935242, lat: 40.73061 } }
+  proximity: { lon: -73.935242, lat: 40.73061 }
 };
 ```
 
@@ -508,6 +515,37 @@ filterSuggestions = (features: any[]) => {
   });
 };
 ```
+
+### `sendGeocoderRequestFunc` (Input)
+
+**Type:** `(value: string, autocomplete: GeocoderAutocomplete) => Promise<any>`
+**Description:** Replaces the default Address Autocomplete API request. The promise must resolve to a GeoJSON feature collection.
+
+```typescript
+sendGeocoderRequest = async (value: string) => {
+  return this.myGeocoder.search(value);
+};
+```
+
+### `sendPlaceDetailsRequestFunc` (Input)
+
+**Type:** `(feature: GeoJSON.Feature, autocomplete: GeocoderAutocomplete) => Promise<any>`
+**Description:** Replaces the default place-details request. The promise must resolve to the selected feature with any required details.
+
+### `sendPlacesByCategoryRequestFunc` (Input)
+
+**Type:** `(categories: string[], offset: number, autocomplete: GeocoderAutocomplete) => Promise<any>`
+**Description:** Replaces the default Places API request used by category search. The promise must resolve to a GeoJSON feature collection.
+
+### `countryCodes` (Deprecated Input)
+
+**Type:** `CountyCode[]`
+**Description:** Deprecated alias for `filterByCountryCode`. Use `[filterByCountryCode]="['us', 'ca']"` instead.
+
+### `position` (Deprecated Input)
+
+**Type:** `GeoPosition`
+**Description:** Deprecated proximity bias. Use `[biasByProximity]="{ lon: -73.935242, lat: 40.73061 }"` instead.
 
 ### `placeSelect` (Output)
 
@@ -597,36 +635,38 @@ onDropdownClose(isClosed: boolean) {
 
 ### `requestStart` (Output)
 
-**Type:** `EventEmitter<void>`
-**Description:** Fires when a geocoding request begins (after the debounce delay).
+**Type:** `EventEmitter<string>`
+**Description:** Emits the query when a geocoding request begins (after the debounce delay).
 Useful for showing loading indicators.
 
 **Example:**
 
 ```html
-<geoapify-geocoder-autocomplete (requestStart)="onRequestStart()"></geoapify-geocoder-autocomplete>
+<geoapify-geocoder-autocomplete (requestStart)="onRequestStart($event)"></geoapify-geocoder-autocomplete>
 ```
 
 ```typescript
-onRequestStart() {
+onRequestStart(query: string) {
   this.loading = true;
+  console.log('Searching for:', query);
 }
 ```
 
 ### `requestEnd` (Output)
 
-**Type:** `EventEmitter<void>`
-**Description:** Fires when a geocoding request finishes, regardless of success or failure.
+**Type:** `EventEmitter<{ success: boolean, data?: any, error?: any }>`
+**Description:** Emits the result when a geocoding request finishes.
 
 **Example:**
 
 ```html
-<geoapify-geocoder-autocomplete (requestEnd)="onRequestEnd()"></geoapify-geocoder-autocomplete>
+<geoapify-geocoder-autocomplete (requestEnd)="onRequestEnd($event)"></geoapify-geocoder-autocomplete>
 ```
 
 ```typescript
-onRequestEnd() {
+onRequestEnd(event: { success: boolean, data?: any, error?: any }) {
   this.loading = false;
+  console.log('Request successful:', event.success);
 }
 ```
 
@@ -652,8 +692,8 @@ onPlacesLoaded(places: any[]) {
 
 ### `placesByCategoryRequestStart` (Output)
 
-**Type:** `EventEmitter<void>`
-**Description:** Triggered when a Places API request starts.
+**Type:** `EventEmitter<Category>`
+**Description:** Emits the selected category when a Places API request starts.
 Useful for showing a loading spinner while fetching nearby POIs.
 
 **Example:**
@@ -661,20 +701,21 @@ Useful for showing a loading spinner while fetching nearby POIs.
 ```html
 <geoapify-geocoder-autocomplete
   [addCategorySearch]="true"
-  (placesByCategoryRequestStart)="onPlacesLoadingStart()">
+  (placesByCategoryRequestStart)="onPlacesLoadingStart($event)">
 </geoapify-geocoder-autocomplete>
 ```
 
 ```typescript
-onPlacesLoadingStart() {
+onPlacesLoadingStart(category: Category) {
   this.isPlacesLoading = true;
+  console.log('Loading category:', category.label);
 }
 ```
 
 ### `placesByCategoryRequestEnd` (Output)
 
-**Type:** `EventEmitter<{ success: boolean }>`
-**Description:** Fired when a Places API request completes (whether successful or not).
+**Type:** `EventEmitter<{ success: boolean, data?: any, error?: any }>`
+**Description:** Emits the result when a Places API request completes.
 
 **Example:**
 
@@ -686,7 +727,7 @@ onPlacesLoadingStart() {
 ```
 
 ```typescript
-onPlacesLoadingEnd(event: { success: boolean }) {
+onPlacesLoadingEnd(event: { success: boolean, data?: any, error?: any }) {
   this.isPlacesLoading = false;
   console.log('Places request finished successfully:', event.success);
 }
@@ -694,27 +735,28 @@ onPlacesLoadingEnd(event: { success: boolean }) {
 
 ### `placeDetailsRequestStart` (Output)
 
-**Type:** `EventEmitter<void>`
-**Description:** Fires when a **place details** request begins — for example, when extra data for a POI is being fetched.
+**Type:** `EventEmitter<GeoJSON.Feature>`
+**Description:** Emits the selected place when a **place details** request begins.
 
 **Example:**
 
 ```html
 <geoapify-geocoder-autocomplete
-  (placeDetailsRequestStart)="onDetailsRequestStart()">
+  (placeDetailsRequestStart)="onDetailsRequestStart($event)">
 </geoapify-geocoder-autocomplete>
 ```
 
 ```typescript
-onDetailsRequestStart() {
+onDetailsRequestStart(place: GeoJSON.Feature) {
   this.isLoadingDetails = true;
+  console.log('Loading details for:', place);
 }
 ```
 
 ### `placeDetailsRequestEnd` (Output)
 
-**Type:** `EventEmitter<{ success: boolean }>`
-**Description:** Fires when a **place details** request completes, whether successful or not.
+**Type:** `EventEmitter<{ success: boolean, data?: any, error?: any }>`
+**Description:** Emits the result when a **place details** request completes.
 
 **Example:**
 
@@ -725,7 +767,7 @@ onDetailsRequestStart() {
 ```
 
 ```typescript
-onDetailsRequestEnd(event: { success: boolean }) {
+onDetailsRequestEnd(event: { success: boolean, data?: any, error?: any }) {
   this.isLoadingDetails = false;
   console.log('Details request success:', event.success);
 }
@@ -754,19 +796,18 @@ onPlaceFromListSelected(event: { place: any, index: number }) {
 
 ### `clear` (Output)
 
-**Type:** `EventEmitter<void>`
-**Description:** Fired when the input field or selection is cleared by the user.
+**Type:** `EventEmitter<ItemType>`
+**Description:** Emits `'address'` or `'category'` when that selection is cleared by the user.
 
 **Example:**
 
 ```html
-<geoapify-geocoder-autocomplete (clear)="onCleared()"></geoapify-geocoder-autocomplete>
+<geoapify-geocoder-autocomplete (clear)="onCleared($event)"></geoapify-geocoder-autocomplete>
 ```
 
 ```typescript
-onCleared() {
-  this.selectedPlace = null;
-  console.log('Input cleared');
+onCleared(itemType: ItemType) {
+  console.log('Cleared:', itemType);
 }
 ```
 

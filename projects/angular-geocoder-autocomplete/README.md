@@ -23,9 +23,9 @@ It provides an easy-to-use Angular wrapper for the [Geoapify Geocoding Autocompl
 * Localized suggestions with support for multiple languages and country filters.
 * Flexible configuration: biasing, filtering, and bounding boxes.
 * Customizable design: easily style or theme your component.
-* Accessible with keyboard navigation and ARIA support.
+* Keyboard navigation for selecting and clearing results.
 * Rich results including coordinates, structured address, and metadata.
-* Compatible with Angular 15–20.
+* Compatible with Angular 19–22.
 
 ## Quick Start
 
@@ -38,9 +38,9 @@ You’ll need a **Geoapify API key** to use the component.
 ### 1. Install
 
 ```bash
-npm install @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
+npm install @geoapify/geocoder-autocomplete@^3.1 @geoapify/angular-geocoder-autocomplete@^3.1
 # or
-yarn add @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
+yarn add @geoapify/geocoder-autocomplete@^3.1 @geoapify/angular-geocoder-autocomplete@^3.1
 ```
 
 Get a Geoapify API key: [https://myprojects.geoapify.com](https://myprojects.geoapify.com)
@@ -65,7 +65,7 @@ import { GeoapifyGeocoderAutocompleteModule } from '@geoapify/angular-geocoder-a
 export class AppModule {}
 ```
 
-Tip: Store your API key in `environment.ts` and reference it as `environment.geoapifyKey` for better maintainability.
+Tip: Use a separate API key for each environment. For browser applications, restrict the key by allowed origins, HTTP referrers, and CORS settings in Geoapify MyProjects.
 
 ### 3. Add styles
 
@@ -82,7 +82,7 @@ Option A: angular.json
 Option B: global stylesheet (e.g., styles.scss)
 
 ```scss
-@import "~@geoapify/geocoder-autocomplete/styles/minimal.css";
+@import "@geoapify/geocoder-autocomplete/styles/minimal.css";
 ```
 
 Themes: minimal, round-borders, minimal-dark, round-borders-dark.
@@ -122,11 +122,24 @@ onSuggestionsChange(list: any[]) {
 
 | @geoapify/angular-geocoder-autocomplete | Angular Version |
 | --------------------------------------- | --------------- |
-| 1.0.x – 1.3.x                           | 9.x–14.x        |
-| 2.0.0 – 2.0.2                           | 15.x–18.x       |
-| 2.0.3 - 2.2.x                           | 19.x–20.x       |
-| 3.0.1+                                  | 21.x            |
+| 1.0.x–1.3.x                             | 9.x–14.x        |
+| 2.0.0                                   | 15.x            |
+| 2.0.1                                   | 15.x–16.x       |
+| 2.0.2                                   | 17.x–18.x       |
+| 2.0.3–2.2.x                             | 19.x–20.x       |
+| 3.0.0                                   | 19.x–20.x       |
+| 3.0.1                                   | 19.x–21.x       |
+| 3.1.x                                   | 19.x–22.x       |
  
+### Upgrading from 3.0.1 to 3.1.x
+
+Version 3.1.x aligns Angular output payloads with the callback arguments from `@geoapify/geocoder-autocomplete` 3.1.x:
+
+* `requestEnd`, `placesByCategoryRequestEnd`, and `placeDetailsRequestEnd` emit `{ success, data, error }`.
+* `placeByCategorySelect` emits `{ place, index }`.
+
+Handlers that ignore `$event`, such as `(requestEnd)="loading = false"`, do not need to change. Handlers that previously treated `$event` as a boolean or place object must read the corresponding property from the new event object.
+
 > If you prefer to use the library directly without Angular bindings, check the **[Standalone Usage](https://geoapify.github.io/angular-geocoder-autocomplete/standalone-usage/)** section.
 
 
@@ -186,7 +199,7 @@ onPlaceSelected(place: any) {
 
 ```html
 <geoapify-geocoder-autocomplete
-  [filterByCountryCode]="['US']"
+  [filterByCountryCode]="['us']"
   (placeSelect)="onPlaceSelected($event)">
 </geoapify-geocoder-autocomplete>
 ```
@@ -275,12 +288,12 @@ Adds boundary or geometry data (where available) to the selected feature.
 <geoapify-geocoder-autocomplete
   [addCategorySearch]="true"
   [showPlacesByCategoryList]="true"
-  [placesByCategoryFilter]="{ categories: ['cafe', 'restaurant'] }"
+  [placesByCategoryFilter]="{ circle: { lon: 13.405, lat: 52.52, radiusMeters: 5000 } }"
   (placeByCategorySelect)="onPoiSelected($event)">
 </geoapify-geocoder-autocomplete>
 ```
 
-Displays nearby Points of Interest (POIs) below the input field, filtered by category.
+Displays category suggestions and nearby Points of Interest (POIs), restricted to a 5 km circle around Berlin.
 
 **Used properties:**
 `addCategorySearch`, `showPlacesByCategoryList`, `placesByCategoryFilter`, `placeByCategorySelect`
@@ -325,7 +338,7 @@ onClear() {
 
 ```html
 <geoapify-geocoder-autocomplete
-  [filterByCountryCode]="['DE']"
+  [filterByCountryCode]="['de']"
   [biasByProximity]="{ lon: 13.405, lat: 52.52 }"
   [addDetails]="true"
   (placeSelect)="onPlaceSelected($event)">

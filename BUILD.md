@@ -4,7 +4,7 @@ This repository contains the Angular component library, a showcase demo app, and
 Use the checklist below to set up a local workstation and verify changes before publishing.
 
 ## 1. Prerequisites
-- Node.js 18.18+ (Angular 20 requirement) and npm 10+.
+- Node.js 22.22.3+, 24.15.0+, or 26+ (Angular 22 requirement) and npm 10+.
 - Angular CLI (`npm install -g @angular/cli`) if you prefer global tooling.
 - For the documentation site: Python 3.9+ with `pip`.
 
@@ -23,12 +23,13 @@ npm run build
 - Add `--watch` when iterating locally: `ng build angular-geocoder-autocomplete --watch`.
 
 ## 4. Run Quality Gates
-- Unit tests: `npm run test`
+- Library unit tests: `npm run test -- angular-geocoder-autocomplete --watch=false --browsers=ChromeHeadless`
 - Linting: `npm run lint`
-These should be clean before submitting changes or publishing.
+
+The demo currently has no `*.spec.ts` files, so its test target has no test inputs. The library tests and lint command should complete without errors before publishing.
 
 ## 5. Run the Demo Application
-1. Update the API key passed to `GeoapifyGeocoderAutocompleteModule.withConfig()` in `projects/demo/src/app/app.module.ts`. The checked-in key is for demos only and may be throttled.
+1. Pass a development API key to `GeoapifyGeocoderAutocompleteModule.withConfig()` in `projects/demo/src/app/app.module.ts`. Do not commit a production key; restrict browser keys by allowed origin in Geoapify MyProjects.
 2. Start the dev server:
    ```bash
    npm run start      # serves the demo on http://localhost:4200
@@ -48,7 +49,7 @@ mkdocs build        # outputs static site into site/
 
 ## 7. Publishing (outline)
 1. Ensure `npm run build` output is up to date.
-2. Update version fields in `projects/angular-geocoder-autocomplete/package.json` and root `package.json` if needed.
+2. Update the version in `projects/angular-geocoder-autocomplete/package.json` and synchronize its lockfile.
 3. From the repo root, publish the package in `dist/angular-geocoder-autocomplete` (`npm publish dist/angular-geocoder-autocomplete --access public`).
 4. Push docs to the hosting repo/site if content changed.
 

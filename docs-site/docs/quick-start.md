@@ -8,9 +8,9 @@ The `@geoapify/angular-geocoder-autocomplete` package has a peer dependency on *
 Install both dependencies using either npm or yarn:
 
 ```bash
-npm install @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
+npm install @geoapify/geocoder-autocomplete@^3.1 @geoapify/angular-geocoder-autocomplete@^3.1
 # or
-yarn add @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
+yarn add @geoapify/geocoder-autocomplete@^3.1 @geoapify/angular-geocoder-autocomplete@^3.1
 
 ```
 
@@ -20,8 +20,8 @@ To use the component, you need a **Geoapify API key**.
 
 1. Sign up at [myprojects.geoapify.com](https://myprojects.geoapify.com/) and create a project.
 2. Copy your API key from the project dashboard.
-3. Start with the **Free plan** (5 requests/sec) and upgrade as needed.
-4. Store the key securely — for example, in `environment.ts`:
+3. Review the current limits on the [Geoapify pricing page](https://www.geoapify.com/pricing/).
+4. Use a separate key for each environment and restrict browser keys by allowed origins, HTTP referrers, and CORS settings:
 
 ```typescript
 export const environment = {
@@ -55,7 +55,36 @@ import { environment } from '../environments/environment';
 export class AppModule {}
 ```
 
-### 2. Importing Styles
+### 2. Standalone application setup
+
+For a standalone application, import the module in the component that uses the autocomplete:
+
+```typescript
+@Component({
+  standalone: true,
+  imports: [GeoapifyGeocoderAutocompleteModule],
+  template: '<geoapify-geocoder-autocomplete></geoapify-geocoder-autocomplete>'
+})
+export class AppComponent {}
+```
+
+Configure the API key during application bootstrap:
+
+```typescript
+import { importProvidersFrom } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { GeoapifyGeocoderAutocompleteModule } from '@geoapify/angular-geocoder-autocomplete';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(
+      GeoapifyGeocoderAutocompleteModule.withConfig(environment.geoapifyKey)
+    )
+  ]
+});
+```
+
+### 3. Importing Styles
 
 The autocomplete control comes with prebuilt CSS themes from **@geoapify/geocoder-autocomplete**.
 You can include these styles in your Angular project in one of two ways.
@@ -72,7 +101,7 @@ You can include these styles in your Angular project in one of two ways.
 #### Option 2: Import in your global stylesheet
 
 ```css
-@import "~@geoapify/geocoder-autocomplete/styles/minimal.css";
+@import "@geoapify/geocoder-autocomplete/styles/minimal.css";
 ```
 
 **Available themes:**
@@ -82,7 +111,7 @@ You can include these styles in your Angular project in one of two ways.
 
 You can also override styles using custom CSS variables or by extending Geoapify’s base classes.
 
-### 3. Using the component in a template
+### 4. Using the component in a template
 
 Basic usage:
 

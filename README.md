@@ -26,12 +26,10 @@ The full docs live in `docs-site/` and can be previewed locally with MkDocs (`mk
 - Category-search tutorials and lazy loading tips
 - Code samples for filters, bias, and event handling
 
-> If you publish the docs, link the hosted site here (e.g. GitHub Pages or internal portal).
-
 ## Getting Started
 1. **Install dependencies**
    ```bash
-   npm install @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
+   npm install @geoapify/geocoder-autocomplete@^3.1 @geoapify/angular-geocoder-autocomplete@^3.1
    ```
 2. **Configure the module** (use an environment-stored API key):
    ```ts
@@ -59,7 +57,7 @@ The full docs live in `docs-site/` and can be previewed locally with MkDocs (`mk
      (placeSelect)="onPlaceSelected($event)">
    </geoapify-geocoder-autocomplete>
    ```
-5. **Category search essentials** (new `placesByCategory*` API):
+5. **Category search essentials** (`placesByCategory*` API):
    ```html
    <geoapify-geocoder-autocomplete
      [addCategorySearch]="true"
@@ -84,7 +82,7 @@ The `projects/demo` workspace illustrates real-world forms and all event emitter
 | --- | --- |
 | `npm run build` | Builds the Angular library via `ng build angular-geocoder-autocomplete`. |
 | `npm run start` | Serves the demo application. |
-| `npm run test` | Runs unit tests. |
+| `npm run test -- angular-geocoder-autocomplete --watch=false --browsers=ChromeHeadless` | Runs the library unit tests once in headless Chrome. |
 | `npm run lint` | Lints the workspace using ESLint. |
 | `npm run e2e` | Placeholder for end-to-end tests (configure as needed). |
 
@@ -103,19 +101,30 @@ More detail on these workflows lives in [BUILD.md](BUILD.md).
 | 2.0.0 | 15.x |
 | 2.0.1 | 15.x-16.x |
 | 2.0.2 | 17.x-18.x |
-| 2.2.0 | 19.x-20.x |
+| 2.0.3 - 2.2.x | 19.x-20.x |
 | 3.0.0 | 19.x-20.x |
+| 3.0.1 | 19.x-21.x |
+| 3.1.x | 19.x-22.x |
 
 
 ## Installation
 
-@geoapify/angular-geocoder-autocomplete has a peer dependency on **@geoapify/geocoder-autocomplete**. To install both dependencies, use the following commands:
+`@geoapify/angular-geocoder-autocomplete` has a peer dependency on `@geoapify/geocoder-autocomplete`. For the 3.1 release line, install both packages with:
 
 ```bash
-npm install @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
-# or 
-yarn add @geoapify/geocoder-autocomplete @geoapify/angular-geocoder-autocomplete
+npm install @geoapify/geocoder-autocomplete@^3.1 @geoapify/angular-geocoder-autocomplete@^3.1
+# or
+yarn add @geoapify/geocoder-autocomplete@^3.1 @geoapify/angular-geocoder-autocomplete@^3.1
 ```
+
+### Upgrading from 3.0.1 to 3.1.x
+
+Version 3.1.x aligns Angular output payloads with the callback arguments from `@geoapify/geocoder-autocomplete` 3.1.x:
+
+- `requestEnd`, `placesByCategoryRequestEnd`, and `placeDetailsRequestEnd` emit `{ success, data, error }`.
+- `placeByCategorySelect` emits `{ place, index }`.
+
+Handlers that ignore `$event`, such as `(requestEnd)="loading = false"`, do not need to change. Handlers that previously treated `$event` as a boolean or place object must read the corresponding property from the new event object.
 
 ## Transitioning from version 1.x to 2.x: Replacing skipDetails with addDetails
 
@@ -125,14 +134,14 @@ In version 2.x of the library, we've replaced the skipDetails option with addDet
 
 If you opt to integrate the Geoapify API for address searches, securing an API key is a prerequisite.
 
-To obtain your API key, you can complete the registration process at [myprojects.geoapify.com](https://myprojects.geoapify.com/). It's worth noting that Geoapify offers a versatile [Freemium pricing model](https://www.geoapify.com/pricing/), affording you the opportunity to initiate your API usage at no initial cost and seamlessly expand your access to our services to align with your evolving requirements.
+Create an API key at [myprojects.geoapify.com](https://myprojects.geoapify.com/). For browser applications, use a separate key for each environment and restrict it by allowed origins, HTTP referrers, and CORS settings. Current plan details are available on the [Geoapify pricing page](https://www.geoapify.com/pricing/).
 
 ## Usage
 ### 1. Import the module
 
 Incorporate the GeoapifyGeocoderAutocompleteModule into your Angular application by importing it as demonstrated below:
 
-```javascript
+```typescript
 // Import necessary modules from Angular and external libraries.
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -156,7 +165,7 @@ import { GeoapifyGeocoderAutocompleteModule } from '@geoapify/angular-geocoder-a
 export class AppModule { }
 ```
 ### 2. Import styles
-Import the CSS styling file from **@geoapify-geocoder-autocomplete** to ensure the proper appearance of the control. You have the flexibility to choose from a variety of styles to suit your webpage's aesthetics, including options such as:
+Import a CSS theme from **@geoapify/geocoder-autocomplete** to style the control:
 
 - `minimal` and `round-borders` for webpages with light background colors.
 - `minimal-dark` and `round-borders-dark` for webpages with dark background colors.
@@ -170,7 +179,7 @@ Import the CSS styling file from **@geoapify-geocoder-autocomplete** to ensure t
 ```
 ##### Option 2: Direct import into your global stylesheet:
 ```css
-@import "~@geoapify/geocoder-autocomplete/styles/minimal.css";
+@import "@geoapify/geocoder-autocomplete/styles/minimal.css";
 ```
 
 ### 3. Use the control in templates
