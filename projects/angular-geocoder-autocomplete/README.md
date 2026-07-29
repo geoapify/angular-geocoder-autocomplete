@@ -319,14 +319,14 @@ Displays category suggestions and nearby Points of Interest (POIs), restricted t
 
 ```html
 <geoapify-geocoder-autocomplete
-  (clear)="onClear()"
+  (clear)="onClear($event)"
   placeholder="Search address">
 </geoapify-geocoder-autocomplete>
 ```
 
 ```typescript
-onClear() {
-  console.log('Selection cleared');
+onClear(itemType: ItemType) {
+  console.log('Selection cleared:', itemType);
 }
 ```
 
